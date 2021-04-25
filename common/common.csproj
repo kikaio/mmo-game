@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Cryptor\XORCryptor.cs" />
     <Compile Include="Utils\Json\JsonicObj.cs" />
+    <Compile Include="Utils\Loggers\CoreLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
