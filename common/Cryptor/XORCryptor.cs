@@ -8,7 +8,7 @@ namespace common.Crypt
 {
     internal class XORCryptor
     {
-        public static byte[] ApplyZor(byte[] _origin, byte[] _keyBytes)
+        public static byte[] ApplyXor(byte[] _origin, byte[] _keyBytes)
         {
             var ret = new byte[_origin.Length];
             Array.Copy(_origin, ret, _origin.Length);

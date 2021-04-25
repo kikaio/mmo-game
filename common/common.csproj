@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptor\CryptHelper.cs" />
     <Compile Include="Cryptor\DHCryptor.cs" />
     <Compile Include="Cryptor\HashSha256.cs" />
     <Compile Include="Cryptor\RsaCryptor.cs" />
