@@ -51,6 +51,7 @@
     <Compile Include="Networking\NetStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Cryptor\XORCryptor.cs" />
+    <Compile Include="Protocols\Packet.cs" />
     <Compile Include="Utils\Json\JsonicObj.cs" />
     <Compile Include="Utils\LockHelper\AsyncLocker.cs" />
     <Compile Include="Utils\LockHelper\Locker.cs" />
