@@ -48,6 +48,7 @@
     <Compile Include="Cryptor\DHCryptor.cs" />
     <Compile Include="Cryptor\HashSha256.cs" />
     <Compile Include="Cryptor\RsaCryptor.cs" />
+    <Compile Include="Networking\NetStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Cryptor\XORCryptor.cs" />
     <Compile Include="Utils\Json\JsonicObj.cs" />
