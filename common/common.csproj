@@ -52,6 +52,7 @@
     <Compile Include="Networking\NetStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Cryptor\XORCryptor.cs" />
+    <Compile Include="Protocols\Package.cs" />
     <Compile Include="Protocols\Packet.cs" />
     <Compile Include="Protocols\Translate.cs" />
     <Compile Include="Sockets\CoreSock.cs" />
