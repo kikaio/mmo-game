@@ -52,6 +52,7 @@
     <Compile Include="Cryptor\XORCryptor.cs" />
     <Compile Include="Utils\Json\JsonicObj.cs" />
     <Compile Include="Utils\LockHelper\Locker.cs" />
+    <Compile Include="Utils\LockHelper\LockMgr.cs" />
     <Compile Include="Utils\Loggers\ConsoleLogger.cs" />
     <Compile Include="Utils\Loggers\CoreLogger.cs" />
   </ItemGroup>
