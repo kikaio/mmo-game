@@ -30,5 +30,25 @@ namespace common.Utils.LockHelper
                 return false;
             return true;
         }
+
+        int curAsyncLockId = 1;
+        public int nextAsyncLockId
+        {
+            get {
+                return Interlocked.Increment(ref curAsyncLockId);
+            }
+        }
+
+        public bool CheckDeadLock(AsyncLocker _al)
+        {
+            if (_al == null)
+                return false;
+            if (_al.threadId == 0)
+                return false;
+            int curId = Thread.CurrentThread.ManagedThreadId;
+            if (_al.threadId == curId)
+                return false;
+            return true;
+        }
     }
 }
