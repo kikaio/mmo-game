@@ -95,7 +95,19 @@ namespace common.Networking
         }
         #endregion
         #region About DhEncrypt
-        #endregion
+        private byte[] dh_key = null;
+        private byte[] dh_iv = null;
+        private bool IsDhAble
+        {
+            get { return dh_key != null && dh_iv != null; }
+        }
 
+        public void SetDhInfo(byte[] _key, byte[] _iv)
+        {
+            dh_key = _key;
+            dh_iv = _iv;
+        }
+
+        #endregion
     }
 }
