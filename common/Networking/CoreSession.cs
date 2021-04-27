@@ -87,6 +87,12 @@ namespace common.Networking
         }
 
         #region About Xor
+        public byte[] xorKeyBytes = Encoding.UTF8.GetBytes("testKey");
+        private bool IsXorAble
+        {
+            //get { return false; }
+            get { return xorKeyBytes != null; }
+        }
         #endregion
         #region About DhEncrypt
         #endregion
