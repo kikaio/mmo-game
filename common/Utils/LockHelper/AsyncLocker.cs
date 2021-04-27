@@ -1,6 +1,8 @@
-﻿using System;
+﻿using common.Utils.Loggers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,6 +45,24 @@ namespace common.Utils.LockHelper
                 return;
             IsDisposed = true;
             ss.Release();
+        }
+
+        public static async Task<AsyncLocker> Guard(AsyncLocker _lock = null, [CallerMemberName] string _mName = "", [CallerLineNumber] int _lineNo = 0)
+        {
+            int curId = Thread.CurrentThread.ManagedThreadId;
+            try
+            {
+                _lock.SetLockData(curId, _mName, _lineNo);
+                await _lock.BeginLock();
+                return _lock;
+            }
+            catch (Exception _e)
+            {
+                CoreLogger logger = new ConsoleLogger();
+                logger.Error($"error from {_mName}::{_lineNo} by using lock guard->{_e.ToString()}");
+            }
+
+            return null;
         }
     }
 }

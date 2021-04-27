@@ -1,4 +1,5 @@
-﻿using System;
+﻿using common.Utils.Loggers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -47,6 +48,31 @@ namespace common.Utils.LockHelper
         public void Dispose()
         {
             EndLock();
+        }
+
+        public static Locker Guard(Locker _lock, [CallerMemberName]string _mName = "", [CallerLineNumber]int _lineNo = 0)
+        {
+            int curThreadId = Thread.CurrentThread.ManagedThreadId;
+            if (LockMgr.Inst.CheckDeadLock(_lock))
+            {
+                ConsoleLogger logger = new ConsoleLogger();
+                logger.Error($"locker[{_lock.lockId}] is deadlock in {_mName}:{_lineNo}");
+                logger.Error($"thread[{_lock.threadId}] VS thread[{curThreadId }]");
+                return null;
+            }
+            try
+            {
+                _lock.BeginLock();
+                _lock.SetLockData(curThreadId, _mName, _lineNo);
+                return _lock;
+            }
+            catch (Exception e)
+            {
+                ConsoleLogger logger = new ConsoleLogger();
+                logger.Error($"error from {_mName}::{_lineNo} by using lock guard->{_e}");
+            }
+
+            return null;
         }
     }
 }
