@@ -10,12 +10,12 @@ namespace common.Protocols
     public class Package
     {
         public CoreSession session { get; private set; } = null;
-        public Packet Packet { get; private set; } = null;
+        public Packet packet { get; private set; } = null;
 
         public Package(CoreSession _s, Packet _p)
         {
             session = _s;
-            Packet = _p;
+            packet = _p;
         }
     }
 }
