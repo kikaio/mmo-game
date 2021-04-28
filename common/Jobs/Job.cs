@@ -11,6 +11,7 @@ namespace common.Jobs
         //0 : 단 1번 실행. 0 > val : sec지날때마다, 0 < val : 무한반복.
         public DateTime EndDate { get; protected set; } = DateTime.MinValue;
         public DateTime StartDate { get; protected set; } = DateTime.MinValue;
+        public DateTime nextDate { get; protected set; }
         protected long deltaTick;
         protected Action JobAct = null;
         protected Task JobTask = null;

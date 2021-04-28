@@ -58,6 +58,7 @@
     <Compile Include="Cryptor\RsaCryptor.cs" />
     <Compile Include="DB\CoreDbContext.cs" />
     <Compile Include="Jobs\Job.cs" />
+    <Compile Include="Jobs\JobNormal.cs" />
     <Compile Include="Jobs\Worker.cs" />
     <Compile Include="Networking\CoreNetwork.cs" />
     <Compile Include="Networking\CoreSession.cs" />
