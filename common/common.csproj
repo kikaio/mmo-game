@@ -107,6 +107,7 @@
     <Compile Include="DB\CoreDbContext.cs" />
     <Compile Include="Jobs\Job.cs" />
     <Compile Include="Jobs\Worker.cs" />
+    <Compile Include="Networking\CoreNetwork.cs" />
     <Compile Include="Networking\CoreSession.cs" />
     <Compile Include="Networking\NetStream.cs" />
     <Compile Include="Networking\SessionMgr.cs" />
