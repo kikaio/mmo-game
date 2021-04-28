@@ -115,6 +115,8 @@
     <Compile Include="Protocols\Package.cs" />
     <Compile Include="Protocols\Packet.cs" />
     <Compile Include="Protocols\Translate.cs" />
+    <Compile Include="Samples\SampleClient.cs" />
+    <Compile Include="Samples\SampleServer.cs" />
     <Compile Include="Sockets\CoreSock.cs" />
     <Compile Include="Utils\Json\JsonicObj.cs" />
     <Compile Include="Utils\LockHelper\AsyncLocker.cs" />
@@ -127,6 +129,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
