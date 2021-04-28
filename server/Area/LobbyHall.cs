@@ -76,7 +76,7 @@ namespace server.Area
             foreach (var r in mRoomDict.Values.ToList())
                 r.Render();
             sb.AppendLine($"-----------------------");
-            logger.WriteDebug()
+            logger.WriteDebug(sb.ToString());
         }
     }
 }
