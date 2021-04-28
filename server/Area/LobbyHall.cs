@@ -21,6 +21,10 @@ namespace server.Area
 
         private CoreLogger logger = new ConsoleLogger();
 
+        public static readonly int MaxRoomCnt = 100;
+
+        private int curRoomCnt = 0;
+
         public LobbyHall(int _id, string _hName)
         {
             LobbyHallId = _id;
@@ -36,14 +40,20 @@ namespace server.Area
 
         private void CreateRoom(RoomId _rId)
         {
+            if (curRoomCnt == MaxRoomCnt)
+            {
+                logger.Error($"room cnt is {MaxRoomCnt}");
+                return;
+            }
             var room = default(Room);
             if (mRoomDict.ContainsKey(_rId))
             {
                 logger.Error("room id is duplicated");
                 return;
             }
-            var newRoom = new Room();
-
+            curRoomCnt++;
+            var newRoom = new Room(curRoomCnt);
+            mRoomDict.Add(newRoom.mRoomId, newRoom);
         }
 
         public bool JoinRoom(RoomId _rId, User _u, out Room _room)
@@ -52,6 +62,8 @@ namespace server.Area
             if (mRoomDict.ContainsKey(_rId))
             {
                 _room = mRoomDict[_rId];
+                if (_room.JoinUser(_u) == false)
+                    return false;
                 return true;
             }
             return false;
