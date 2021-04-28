@@ -121,6 +121,7 @@
     <Compile Include="Sockets\CoreSock.cs" />
     <Compile Include="Utils\Json\JsonicObj.cs" />
     <Compile Include="Utils\LockHelper\AsyncLocker.cs" />
+    <Compile Include="Utils\LockHelper\LockedSwapQ.cs" />
     <Compile Include="Utils\LockHelper\Locker.cs" />
     <Compile Include="Utils\LockHelper\LockMgr.cs" />
     <Compile Include="Utils\Loggers\ConsoleLogger.cs" />
