@@ -69,6 +69,8 @@
     <Compile Include="Protocols\Packet.cs" />
     <Compile Include="Protocols\Translate.cs" />
     <Compile Include="Samples\SampleClient.cs" />
+    <Compile Include="Samples\SampleCommonEnums.cs" />
+    <Compile Include="Samples\SamplePacket.cs" />
     <Compile Include="Samples\SampleServer.cs" />
     <Compile Include="Sockets\CoreSock.cs" />
     <Compile Include="Utils\Json\JsonicObj.cs" />
