@@ -9,6 +9,7 @@ namespace common.Samples
     public enum CONTENT_TYPE : ushort
     {
         NONE,
+        HB_CHECK,
         TEST,
         END,
     }
