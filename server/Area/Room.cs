@@ -2,6 +2,7 @@
 using server.Users;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,17 @@ namespace server.Area
             _quitUser = mUserDict[_uid];
             curUserCnt--;
             return true;
+        }
+
+        [Conditional("DEBUG")]
+        public void Render()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Room[{mRoomId}]");
+            foreach (var user in mUserDict.Values.ToList())
+                user.Render();
+            sb.AppendLine($"===========");
+            logger.WriteDebug(sb.ToString());
         }
     }
 }

@@ -2,6 +2,7 @@
 using server.Users;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,8 +37,6 @@ namespace server.Area
 
         }
         
-        //까르비올라님 도네이션 기다리고 있습니다.
-
         private void CreateRoom(RoomId _rId)
         {
             if (curRoomCnt == MaxRoomCnt)
@@ -67,6 +66,17 @@ namespace server.Area
                 return true;
             }
             return false;
+        }
+
+        [Conditional("DEBUG")]
+        public void Render()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"LobbyHall[{LobbyHallId}]");
+            foreach (var r in mRoomDict.Values.ToList())
+                r.Render();
+            sb.AppendLine($"-----------------------");
+            logger.WriteDebug()
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using common.Utils.Loggers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace server.Users
     using UserId = Int64;
     public class User
     {
+        private CoreLogger logger = new ConsoleLogger();
+
         public UserId uId { get; private set; } = 0;
 
         public static User Create(UserId _newId)
@@ -24,6 +27,7 @@ namespace server.Users
         {
             var sb = new StringBuilder();
             sb.AppendLine($"User[{uId}]");
+            logger.WriteDebug(sb.ToString());
         }
     }
 }
