@@ -28,7 +28,7 @@ namespace common.Samples
         {
             name = _name;
             shutdownAct = SampleShutDown;
-            ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), _port);
+            ep = new IPEndPoint(IPAddress.Any, _port);
         }
 
         private void SampleShutDown()
