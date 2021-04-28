@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace common.Samples
 {
-    class SampleClient
+    public class SampleClient
     {
+
     }
 }
