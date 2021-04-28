@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,13 @@ namespace server.Users
             var ret = default(User);
             ret.uId = _newId;
             return ret;
+        }
+
+        [Conditional("DEBUG")]
+        public void Render()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"User[{uId}]");
         }
     }
 }
