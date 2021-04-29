@@ -8,3 +8,4 @@ MmoClient/Library/
 MmoClient/Logs/
 MmoClient/obj/
 MmoClient/Temp/
+*.meta
