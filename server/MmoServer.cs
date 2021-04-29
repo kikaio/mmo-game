@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace server
@@ -17,11 +18,29 @@ namespace server
         CoreSock mListener = new CoreTCP(AddressFamily.InterNetwork);
 
         Dictionary<string, Worker> mWorkerDict = new Dictionary<string, Worker>();
+        CancellationTokenSource shutdownTokenSource = new CancellationTokenSource();
 
-
-        public MmoServer() : base("MMO")
+        public MmoServer() : base("MMO", "", 30000)
         {
             ep = new IPEndPoint(IPAddress.Any, port);
+            shutdownAct = () => {
+                logger.WriteDebugWarn("Server shutdown called");
+                shutdownTokenSource.Cancel();
+                foreach (var _w in mWorkerDict.Values.ToList())
+                {
+                    logger.WriteDebugWarn($"[worker{_w.workerName}] work fin requested");
+                    _w.WorkFinish();
+                }
+                mWorkerDict.Clear();
+                int delaySec = 30;
+                logger.WriteDebugWarn($"server down after {delaySec} Sec");
+                while (delaySec > 0)
+                {
+                    logger.WriteDebugWarn($"{delaySec}");
+                    Thread.Sleep(1000 * 1);
+                    delaySec--;
+                }
+            };
         }
 
         private void BindAndListen()
@@ -34,7 +53,7 @@ namespace server
             var pkgWorker = mWorkerDict["pkg"] = new Worker("pkg");
             pkgWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
             {
-                while (true)
+                while (shutdownTokenSource.Token.IsCancellationRequested == false)
                 {
                     var pkg = packageQ.pop();
                     if (pkg == default(Package))
@@ -47,6 +66,9 @@ namespace server
             var hpCheckWorker = mWorkerDict["hb"] = new Worker("hb");
             hpCheckWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
             {
+                if (shutdownTokenSource.Token.IsCancellationRequested)
+                    return;
+
                 var delList = new List<CoreSession>();
                 foreach (var s in SessionMgr.Inst.ToSessonList())
                 {
