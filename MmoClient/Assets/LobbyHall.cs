@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using clientForUnity;
+
 public class LobbyHall : MonoBehaviour
 {
     // Start is called before the first frame update
