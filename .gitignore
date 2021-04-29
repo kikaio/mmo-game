@@ -3,3 +3,4 @@ common/obj/
 server/obj/
 packages/
 MmoCore/obj/
+clientForUnity/obj/
