@@ -2,6 +2,7 @@
 using common.Networking;
 using common.Protocols;
 using common.Sockets;
+using MmoCore.Enums;
 using MmoCore.Packets;
 using System;
 using System.Collections.Generic;
@@ -124,19 +125,87 @@ namespace server
         protected override async Task AnalizerAsync_Ans(CoreSession _s, Packet _p)
         {
             MmoCorePacket p = new MmoCorePacket(_p);
+            switch (p.cType)
+            {
+                case CONTENT_TYPE.NONE:
+                    break;
+                case CONTENT_TYPE.TEST:
+                    {
+                        logger.WriteDebug($"[{_s.SessionId}] send Test Packet_Ans");
+                    }
+                    break;
+                case CONTENT_TYPE.HB_CHECK:
+                    break;
+                case CONTENT_TYPE.END:
+                    break;
+                default:
+                    break;
+            }
             return;
         }
 
         protected override async Task AnalizerAsync_Noti(CoreSession _s, Packet _p)
         {
+            MmoCorePacket p = new MmoCorePacket(_p);
+            switch (p.cType)
+            {
+                case CONTENT_TYPE.NONE:
+                    break;
+                case CONTENT_TYPE.TEST:
+                    {
+                        logger.WriteDebug($"[{_s.SessionId}] send Test Packet_Noti");
+                    }
+                    break;
+                case CONTENT_TYPE.HB_CHECK:
+                    {
+                        _s.UpdateHeartBeat();
+                        logger.WriteDebug($"[{_s.SessionId}] hb update");
+                    }
+                    break;
+                case CONTENT_TYPE.END:
+                    break;
+                default:
+                    break;
+            }
             return;
         }
         protected override async Task AnalizerAsync_Req(CoreSession _s, Packet _p)
         {
+            MmoCorePacket p = new MmoCorePacket(_p);
+            switch (p.cType)
+            {
+                case CONTENT_TYPE.NONE:
+                    break;
+                case CONTENT_TYPE.TEST:
+                    {
+                        logger.WriteDebug($"[{_s.SessionId}] send Test Packet_Req");
+                    }
+                    break;
+                case CONTENT_TYPE.HB_CHECK:
+                    break;
+                case CONTENT_TYPE.END:
+                    break;
+                default:
+                    break;
+            }
             return;
         }
         protected override async Task AnalizerAsync_Test(CoreSession _s, Packet _p)
         {
+            MmoCorePacket p = new MmoCorePacket(_p);
+            switch (p.cType)
+            {
+                case CONTENT_TYPE.TEST:
+                    {
+                        logger.WriteDebug($"[{_s.SessionId}] send Test Packet_Test");
+                    }
+                    break;
+                case CONTENT_TYPE.NONE:
+                case CONTENT_TYPE.HB_CHECK:
+                case CONTENT_TYPE.END:
+                default:
+                    break;
+            }
             return;
         }
         #endregion
