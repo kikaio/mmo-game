@@ -59,6 +59,10 @@
       <Project>{75dd1315-b94c-4142-b9cc-333558cb287b}</Project>
       <Name>common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MmoCore\MmoCore.csproj">
+      <Project>{f5cdd777-6990-4c3b-9640-ec6c5e0dcf40}</Project>
+      <Name>MmoCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
