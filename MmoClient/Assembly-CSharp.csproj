@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{1D3479D2-E18E-426C-075F-CF705A153AF5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -281,6 +280,24 @@
     </Reference>
     <Reference Include="clientForUnity">
       <HintPath>Assets\Plugins\clientForUnity.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.EntityFramework">
+      <HintPath>Assets\Plugins\MySql.Data.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="common">
+      <HintPath>Assets\Plugins\common.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>Assets\Plugins\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MmoCore">
+      <HintPath>Assets\Plugins\MmoCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>Assets\Plugins\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.6f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -714,6 +731,8 @@
     <Reference Include="Unity.2D.SpriteShape.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.2D.SpriteShape.Runtime.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
