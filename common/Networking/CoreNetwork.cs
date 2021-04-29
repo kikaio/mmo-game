@@ -19,19 +19,17 @@ namespace common.Networking
         public int port { get; protected set; } = 0;
         public string name { get; protected set; } = "MuYaHo";
         protected int backlog = 10;
-        protected string ipAddrStr = "";
         protected EndPoint ep;
 
         public Action shutdownAct { get; protected set; } = null;
 
         public bool isDown { get; protected set; } = false;
 
-        public CoreNetwork(string _name = "CoreNetwork", string _ipAddr = "127.0.0.1"
+        public CoreNetwork(string _name = "CoreNetwork"
             , int _port = 30000)
         {
             name = _name;
             port = _port;
-            ipAddrStr = _ipAddr;
             Translate.Init();
         }
 
