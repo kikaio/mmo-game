@@ -2,6 +2,7 @@
 using common.Networking;
 using common.Protocols;
 using common.Sockets;
+using MmoCore.Packets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace server
         Dictionary<string, Worker> mWorkerDict = new Dictionary<string, Worker>();
         CancellationTokenSource shutdownTokenSource = new CancellationTokenSource();
 
-        public MmoServer() : base("MMO", "", 30000)
+        public MmoServer() : base("MMO", 30000)
         {
             ep = new IPEndPoint(IPAddress.Any, port);
             shutdownAct = () => {
@@ -50,7 +51,7 @@ namespace server
         }
         private void ReadyWorkers()
         {
-            var pkgWorker = mWorkerDict["pkg"] = new Worker("pkg");
+            var pkgWorker = mWorkerDict["pkg"] = new Worker("pkg", true);
             pkgWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
             {
                 while (shutdownTokenSource.Token.IsCancellationRequested == false)
@@ -63,7 +64,7 @@ namespace server
                 packageQ.Swap();
             }));
 
-            var hpCheckWorker = mWorkerDict["hb"] = new Worker("hb");
+            var hpCheckWorker = mWorkerDict["hb"] = new Worker("hb", true);
             hpCheckWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
             {
                 if (shutdownTokenSource.Token.IsCancellationRequested)
@@ -96,7 +97,7 @@ namespace server
             mWorkerDict["pkg"].WorkStart();
             mWorkerDict["hb"].WorkStart();
         }
-
+        #region SyncDispatch
         protected override void Analizer_Ans(CoreSession _s, Packet _p)
         {
             throw new NotImplementedException();
@@ -116,5 +117,28 @@ namespace server
         {
             throw new NotImplementedException();
         }
+        #endregion
+
+        #region AsyncDispatch
+
+        protected override async Task AnalizerAsync_Ans(CoreSession _s, Packet _p)
+        {
+            MmoCorePacket p = new MmoCorePacket(_p);
+            return;
+        }
+
+        protected override async Task AnalizerAsync_Noti(CoreSession _s, Packet _p)
+        {
+            return;
+        }
+        protected override async Task AnalizerAsync_Req(CoreSession _s, Packet _p)
+        {
+            return;
+        }
+        protected override async Task AnalizerAsync_Test(CoreSession _s, Packet _p)
+        {
+            return;
+        }
+        #endregion
     }
 }
