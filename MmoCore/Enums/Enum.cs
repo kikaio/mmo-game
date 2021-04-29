@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MmoCore.Enums
 {
-    public enum CONTENT_TYPE
+    public enum CONTENT_TYPE : ushort
     {
         NONE,
         TEST,
