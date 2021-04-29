@@ -34,6 +34,10 @@ namespace server
                     _w.WorkFinish();
                 }
                 mWorkerDict.Clear();
+
+                logger.WriteDebugWarn($"call CloseAllSession");
+                SessionMgr.Inst.CloseAllSession();
+
                 int delaySec = 30;
                 logger.WriteDebugWarn($"server down after {delaySec} Sec");
                 while (delaySec > 0)
