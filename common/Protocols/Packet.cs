@@ -8,7 +8,14 @@ using System.Threading.Tasks;
 
 namespace common.Protocols
 {
-    public class Packet
+
+    public interface ISerializePacket
+    {
+        void SerRead();
+        void SerWrite();
+    }
+
+    public class Packet : ISerializePacket
     {
         public static int GetHeaderSize()
         {
@@ -103,6 +110,26 @@ namespace common.Protocols
         public void ReadPacketType()
         {
             pType = (PACKET_TYPE)data.ReadUInt16();
+        }
+
+        public void SerRead()
+        {
+            Translate.Write(data, (ushort)pType);
+        }
+
+        public void SerWrite()
+        {
+            pType = (PACKET_TYPE)Translate.Read<ushort>(data);
+        }
+
+
+        public virtual void PacketRead()
+        {
+            this.SerRead();
+        }
+        public virtual void PacketWrite()
+        {
+            this.SerWrite();
         }
     }
 }
