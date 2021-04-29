@@ -4,3 +4,7 @@ server/obj/
 packages/
 MmoCore/obj/
 clientForUnity/obj/
+MmoClient/Library/
+MmoClient/Logs/
+MmoClient/obj/
+MmoClient/Temp/
