@@ -30,5 +30,22 @@ namespace common.Jobs
 
             return true;
         }
+
+        public override async Task<bool> TickAsync()
+        {
+            var curDt = DateTime.UtcNow;
+            if (JobTask == null)
+                return false;
+            if (StartDate > curDt)
+                return true;
+            if (EndDate < curDt)
+                return false;
+            if (nextDate > curDt)
+                return true;
+
+            nextDate = nextDate.Add(new TimeSpan(deltaTick));
+            await JobTask;
+            return true;
+        }
     }
 }
