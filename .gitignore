@@ -11,3 +11,4 @@ MmoClient/Temp/
 *.meta
 common/bin/
 MmoCore/bin/
+clientForUnity/bin/
