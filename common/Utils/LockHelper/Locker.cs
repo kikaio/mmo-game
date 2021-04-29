@@ -66,7 +66,7 @@ namespace common.Utils.LockHelper
                 _lock.SetLockData(curThreadId, _mName, _lineNo);
                 return _lock;
             }
-            catch (Exception e)
+            catch (Exception _e)
             {
                 ConsoleLogger logger = new ConsoleLogger();
                 logger.Error($"error from {_mName}::{_lineNo} by using lock guard->{_e}");

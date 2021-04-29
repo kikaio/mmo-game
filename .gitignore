@@ -9,3 +9,5 @@ MmoClient/Logs/
 MmoClient/obj/
 MmoClient/Temp/
 *.meta
+common/bin/
+MmoCore/bin/
