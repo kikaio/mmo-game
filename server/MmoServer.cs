@@ -59,7 +59,7 @@ namespace server
             var pkgWorker = mWorkerDict["pkg"] = new Worker("pkg", true);
             pkgWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
             {
-                while (shutdownTokenSource.Token.IsCancellationRequested == false)
+                while(shutdownTokenSource.IsCancellationRequested == false)
                 {
                     var pkg = packageQ.pop();
                     if (pkg == default(Package))
@@ -70,9 +70,11 @@ namespace server
             }));
 
             var hpCheckWorker = mWorkerDict["hb"] = new Worker("hb", true);
-            hpCheckWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
+            
+            long hbCehckTicks = TimeSpan.FromMilliseconds(CoreSession.hbDelayMilliSec).Ticks;
+            hpCheckWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, hbCehckTicks, () =>
             {
-                if (shutdownTokenSource.Token.IsCancellationRequested)
+                if (shutdownTokenSource.IsCancellationRequested)
                     return;
 
                 var delList = new List<CoreSession>();
@@ -87,6 +89,25 @@ namespace server
                     var del = default(CoreSession);
                     if (SessionMgr.Inst.ForceCloseSession(s.SessionId, out del) == false)
                         logger.Error($"session[{s.SessionId}] force close is failed");
+                }
+            }));
+
+            var cmdWorker = mWorkerDict["cmd"] = new Worker("cmd", true);
+            cmdWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
+            {
+                if (shutdownTokenSource.IsCancellationRequested)
+                    return;
+                string inputs = Console.ReadLine().ToUpper();
+                string[] cmds = inputs.Split(' ');
+                if (cmds.Length < 1)
+                    return;
+                switch (cmds[0])
+                {
+                    case "TEST":
+                        {
+                            //do something
+                        }
+                        break;
                 }
             }));
         }
