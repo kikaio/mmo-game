@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{1D3479D2-E18E-426C-075F-CF705A153AF5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -52,9 +53,6 @@
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2020.3.6f1</UnityVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Assets\LobbyHall.cs" />
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.6f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
@@ -325,9 +323,6 @@
     </Reference>
     <Reference Include="Google.Protobuf">
       <HintPath>Assets\Plugins\clientForUnity\Google.Protobuf.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine_20.3.6f1">
-      <HintPath>Assets\Plugins\clientForUnity\UnityEngine_20.3.6f1.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data.EntityFramework">
       <HintPath>Assets\Plugins\clientForUnity\MySql.Data.EntityFramework.dll</HintPath>
