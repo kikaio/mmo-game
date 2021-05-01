@@ -278,26 +278,62 @@
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.6f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
-    <Reference Include="clientForUnity">
-      <HintPath>Assets\Plugins\clientForUnity.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>Assets\Plugins\clientForUnity\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data.EntityFramework">
-      <HintPath>Assets\Plugins\MySql.Data.EntityFramework.dll</HintPath>
+    <Reference Include="K4os.Compression.LZ4">
+      <HintPath>Assets\Plugins\clientForUnity\K4os.Compression.LZ4.dll</HintPath>
     </Reference>
-    <Reference Include="common">
-      <HintPath>Assets\Plugins\common.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>Assets\Plugins\MySql.Data.dll</HintPath>
+    <Reference Include="System.Memory">
+      <HintPath>Assets\Plugins\clientForUnity\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="MmoCore">
-      <HintPath>Assets\Plugins\MmoCore.dll</HintPath>
+      <HintPath>Assets\Plugins\clientForUnity\MmoCore.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Hash.xxHash">
+      <HintPath>Assets\Plugins\clientForUnity\K4os.Hash.xxHash.dll</HintPath>
+    </Reference>
+    <Reference Include="common">
+      <HintPath>Assets\Plugins\clientForUnity\common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>Assets\Plugins\clientForUnity\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="clientForUnity">
+      <HintPath>Assets\Plugins\clientForUnity\clientForUnity.dll</HintPath>
+    </Reference>
+    <Reference Include="Zstandard.Net">
+      <HintPath>Assets\Plugins\clientForUnity\Zstandard.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4.Streams">
+      <HintPath>Assets\Plugins\clientForUnity\K4os.Compression.LZ4.Streams.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Plugins\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Assets\Plugins\clientForUnity\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>Assets\Plugins\EntityFramework.dll</HintPath>
+    <Reference Include="MySql.Data">
+      <HintPath>Assets\Plugins\clientForUnity\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>Assets\Plugins\clientForUnity\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Ubiety.Dns.Core">
+      <HintPath>Assets\Plugins\clientForUnity\Ubiety.Dns.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>Assets\Plugins\clientForUnity\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf">
+      <HintPath>Assets\Plugins\clientForUnity\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine_20.3.6f1">
+      <HintPath>Assets\Plugins\clientForUnity\UnityEngine_20.3.6f1.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.EntityFramework">
+      <HintPath>Assets\Plugins\clientForUnity\MySql.Data.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>Assets\Plugins\clientForUnity\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.6f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
