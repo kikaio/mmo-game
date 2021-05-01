@@ -33,12 +33,12 @@ namespace server.Utils
         {
             var sb = new StringBuilder();
             sb.AppendLine("[ServerMonitor]");
-            sb.AppendLine($"cur Total Cpu : {}");
-            sb.AppendLine($"Cur Use Cpu :  {}");
-            sb.AppendLine($"cur process use cpu :  {}");
+            sb.AppendLine($"cur Total Cpu : ");
+            sb.AppendLine($"Cur Use Cpu :  ");
+            sb.AppendLine($"cur process use cpu :  ");
 
-            sb.AppendLine($"Cur Use Mem :  {}");
-            sb.AppendLine($"cur process use Mem :  {}");
+            sb.AppendLine($"Cur Use Mem :  ");
+            sb.AppendLine($"cur process use Mem :  ");
 
             logger.WriteDebug(sb.ToString());
         }
