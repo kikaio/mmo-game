@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: LobbyHall
+    uniqueID: 3118844263
+    locked: 0
+  - name: Room
+    uniqueID: 4217918411
+    locked: 0
+  - name: User
+    uniqueID: 2011192185
+    locked: 0
+  - name: Door
+    uniqueID: 4265671101
+    locked: 0
