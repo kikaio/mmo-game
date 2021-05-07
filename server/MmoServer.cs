@@ -111,6 +111,9 @@ namespace server
                             //do something
                         }
                         break;
+                    case "EXIT":
+                        shutdownTokenSource.Cancel();
+                        break;
                 }
             }));
         }
@@ -125,7 +128,14 @@ namespace server
         {
             mWorkerDict["pkg"].WorkStart();
             mWorkerDict["hb"].WorkStart();
+            mWorkerDict["cmd"].WorkStart();
         }
+
+        public bool IsShutdownRequested()
+        {
+            return shutdownTokenSource.IsCancellationRequested;
+        }
+
         #region SyncDispatch
         protected override void Analizer_Ans(CoreSession _s, Packet _p)
         {
