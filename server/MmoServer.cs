@@ -2,6 +2,7 @@
 using common.Networking;
 using common.Protocols;
 using common.Sockets;
+using common.Utils.Loggers;
 using MmoCore.Enums;
 using MmoCore.Packets;
 using System;
@@ -24,6 +25,8 @@ namespace server
 
         public MmoServer() : base("MMO", 30000)
         {
+            logger = new Log4Logger();
+            logger.WriteDebug("Server Start");
             ep = new IPEndPoint(IPAddress.Any, port);
             shutdownAct = () => {
                 logger.WriteDebugWarn("Server shutdown called");
