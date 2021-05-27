@@ -11,6 +11,9 @@ namespace MmoCore.Enums
         NONE,
         TEST,
         HB_CHECK,
+        HELLO,
+        WELCOME,
+        CHAT,
         RMC,    //remote method call?
         END,
     }
