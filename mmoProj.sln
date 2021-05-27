@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MmoCore", "MmoCore\MmoCore.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clientForUnity", "clientForUnity\clientForUnity.csproj", "{E3B9C7A0-C563-49A6-90F9-8F8FA72F1894}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClient", "TestClient\TestClient.csproj", "{E7DA80A3-CE6A-4E54-A09C-ED73577C404D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E3B9C7A0-C563-49A6-90F9-8F8FA72F1894}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3B9C7A0-C563-49A6-90F9-8F8FA72F1894}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3B9C7A0-C563-49A6-90F9-8F8FA72F1894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7DA80A3-CE6A-4E54-A09C-ED73577C404D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7DA80A3-CE6A-4E54-A09C-ED73577C404D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7DA80A3-CE6A-4E54-A09C-ED73577C404D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7DA80A3-CE6A-4E54-A09C-ED73577C404D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
