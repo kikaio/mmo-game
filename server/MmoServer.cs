@@ -67,7 +67,10 @@ namespace server
                     var pkg = packageQ.pop();
                     if (pkg == default(Package))
                         break;
-                    PackageDispatcher(pkg);
+                    //PackageDispatcher(pkg);
+                    Task.Factory.StartNew(async()=> {
+                        await PackageDispatcherAsync(pkg);
+                        });
                 }
                 packageQ.Swap();
             }));
@@ -200,6 +203,8 @@ namespace server
                         logger.WriteDebug($"[{_s.SessionId}] hb update");
                     }
                     break;
+                case CONTENT_TYPE.RMC:
+                    break;
                 case CONTENT_TYPE.END:
                     break;
                 default:
@@ -220,6 +225,8 @@ namespace server
                     }
                     break;
                 case CONTENT_TYPE.HB_CHECK:
+                    break;
+                case CONTENT_TYPE.RMC:
                     break;
                 case CONTENT_TYPE.END:
                     break;
