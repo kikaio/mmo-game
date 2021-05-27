@@ -8,9 +8,10 @@ namespace common.Jobs
 {
     public class JobOnce : Job
     {
-        public JobOnce(DateTime _sd)
+        public JobOnce(DateTime _sd, Action _act)
         {
             StartDate = _sd;
+            JobAct = _act;
         }
 
         //Do Job once after start datetime, and then return false;
