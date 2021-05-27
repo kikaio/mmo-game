@@ -15,6 +15,7 @@ namespace common.Jobs
             deltaTick = _deltaTicks;
             JobAct = _act;
         }
+
         public override bool Tick()
         {
             var curDt = DateTime.UtcNow;
