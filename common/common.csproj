@@ -118,10 +118,8 @@
     <Compile Include="Networking\SessionMgr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Cryptor\XORCryptor.cs" />
-    <Compile Include="Protocols\CoreRPCAttributes.cs" />
     <Compile Include="Protocols\Package.cs" />
     <Compile Include="Protocols\Packet.cs" />
-    <Compile Include="Protocols\CoreRPCMgr.cs" />
     <Compile Include="Protocols\Translate.cs" />
     <Compile Include="Samples\SampleClient.cs" />
     <Compile Include="Samples\SampleCommonEnums.cs" />
