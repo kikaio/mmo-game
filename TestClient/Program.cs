@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestClient
@@ -10,6 +11,13 @@ namespace TestClient
     {
         static void Main(string[] args)
         {
+            Tester t = new Tester();
+            t.ReadyToStart();
+            t.Start();
+            while (t.isDown == false)
+            {
+                Thread.Sleep(1000);
+            }
         }
     }
 }

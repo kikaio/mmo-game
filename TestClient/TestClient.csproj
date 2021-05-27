@@ -45,9 +45,21 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tester.cs" />
+    <Compile Include="TesterSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\common\common.csproj">
+      <Project>{75DD1315-B94C-4142-B9CC-333558CB287B}</Project>
+      <Name>common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MmoCore\MmoCore.csproj">
+      <Project>{f5cdd777-6990-4c3b-9640-ec6c5e0dcf40}</Project>
+      <Name>MmoCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
