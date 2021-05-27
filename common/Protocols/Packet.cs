@@ -114,12 +114,12 @@ namespace common.Protocols
 
         public void SerRead()
         {
-            Translate.Write(data, (ushort)pType);
+            pType = (PACKET_TYPE)Translate.Read<ushort>(data);
         }
 
         public void SerWrite()
         {
-            pType = (PACKET_TYPE)Translate.Read<ushort>(data);
+            Translate.Write(data, (ushort)pType);
         }
 
 
