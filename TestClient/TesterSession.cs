@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestClient
 {
-    public class TesterSession : CoreSession
+    public partial class TesterSession : CoreSession
     {
         public TesterSession(long _sid, CoreSock _csock)
             : base(_sid, _csock)

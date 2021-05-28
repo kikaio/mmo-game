@@ -53,8 +53,12 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="State\WaitConn.cs" />
+    <Compile Include="State\WaitWelcome.cs" />
     <Compile Include="Tester.cs" />
+    <Compile Include="State\Tester.State.cs" />
     <Compile Include="TesterSession.cs" />
+    <Compile Include="TesterSession.LobbyRPC.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

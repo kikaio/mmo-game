@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace server.RPC
+namespace server.Users
 {
     public partial class UserSession : CoreSession
     {
-        public UserSession(long _sid, CoreSock _sock) : base(_sid, _sock)
+        public UserSession(long _sid, CoreSock _cs)
+            : base(_sid, _cs)
         {
         }
     }

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace TestClient
 {
-    public class Tester : CoreNetwork
+    public partial class Tester : CoreNetwork
     {
         public string host { get; private set; } = "127.0.0.1";
         public int port { get; private set; } = 30000;
@@ -106,6 +106,7 @@ namespace TestClient
         public override void ReadyToStart()
         {
             ReadyTranslate();
+            ReadyState();
             ReadyWorker();
         }
 
@@ -158,7 +159,6 @@ namespace TestClient
                 if(await tSession.OnSendTAP(hello.packet))
                     logger.WriteDebug("send complete");
             });
-
         }
         #region SYNC
         protected override void Analizer_Ans(CoreSession _s, Packet _p)
@@ -181,33 +181,28 @@ namespace TestClient
             throw new NotImplementedException();
         }
         #endregion
+
         #region ASYNC
+        protected override async Task AnalizerAsync_Req(CoreSession _s, Packet _p)
+        {
+            await stateDict[curState].AnalizerAsync_Req(_s, _p);
+        }
+
         protected override async Task AnalizerAsync_Ans(CoreSession _s, Packet _p)
         {
-            var mmoPacket = new MmoCorePacket(_p);
-            switch (mmoPacket.cType)
-            {
-                case MmoCore.Enums.CONTENT_TYPE.WELCOME:
-                    {
-                        var wp = new WelcomePacket(mmoPacket);
-                        wp.PacketRead();
-                        if (wp.sId < 0)
-                        {
-                            //todo : expired session?
-                        }
-                        else
-                        {
-                            logger.WriteDebug($"Tester Client Recv welcome ans, my session id is {wp.sId}");
-                            tSession.SetSessionId(wp.sId);
-                        }
-                    }
-                    break;
-                case MmoCore.Enums.CONTENT_TYPE.RMC:
-                    break;
-                default:
-                    break;
-            }
+            await stateDict[curState].AnalizerAsync_Ans(_s, _p);
         }
+
+        protected override async Task AnalizerAsync_Noti(CoreSession _s, Packet _p)
+        {
+            await stateDict[curState].AnalizerAsync_Noti(_s, _p);
+        }
+
+        protected override async Task AnalizerAsync_Test(CoreSession _s, Packet _p)
+        {
+            await stateDict[curState].AnalizerAsync_Test(_s, _p);
+        }
+
         #endregion
     }
 }
