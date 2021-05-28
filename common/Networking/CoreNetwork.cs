@@ -66,13 +66,9 @@ namespace common.Networking
         {
             var s = _pkg.session;
             var p = _pkg.packet;
-            if (p.GetHeader() == 0)
-            {
-            }
-            else
-            {
-                p.ReadPacketType();
-            }
+
+            p.ReadPacketType();
+
             logger.WriteDebug($"[{p.pType.ToString()}] analized");
             switch (p.pType)
             {

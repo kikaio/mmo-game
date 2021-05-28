@@ -21,9 +21,7 @@ namespace server
             {
                 Thread.Sleep(1000);
             }
-
             Console.WriteLine("programe down, press any key");
-            Console.ReadKey();
         }
     }
 }

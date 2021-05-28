@@ -49,6 +49,9 @@ namespace server
                     Thread.Sleep(1000 * 1);
                     delaySec--;
                 }
+
+                Console.Write("Server is down");
+                Console.ReadKey();
             };
         }
 
@@ -60,22 +63,23 @@ namespace server
         private void ReadyWorkers()
         {
             var pkgWorker = mWorkerDict["pkg"] = new Worker("pkg", true);
-            pkgWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
+            pkgWorker.PushJob(new JobOnce(DateTime.UtcNow, async () =>
             {
-                while(shutdownTokenSource.IsCancellationRequested == false)
+                while (shutdownTokenSource.IsCancellationRequested == false)
                 {
-                    var pkg = packageQ.pop();
-                    if (pkg == default(Package))
-                        break;
-                    //PackageDispatcher(pkg);
-                    Task.Factory.StartNew(async()=> {
+                    packageQ.Swap();
+                    while (true)
+                    {
+                        var pkg = packageQ.pop();
+                        if (pkg == default(Package))
+                            break;
                         await PackageDispatcherAsync(pkg);
-                        });
+                    }
+                    await Task.Delay(100);
                 }
-                packageQ.Swap();
             }));
 
-            var hpCheckWorker = mWorkerDict["hb"] = new Worker("hb", true);
+            var hpCheckWorker = mWorkerDict["hb"] = new Worker("hb");
             
             long hbCehckTicks = TimeSpan.FromMilliseconds(CoreSession.hbDelayMilliSec).Ticks;
             hpCheckWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, hbCehckTicks, () =>
@@ -98,25 +102,21 @@ namespace server
                 }
             }));
 
-            var cmdWorker = mWorkerDict["cmd"] = new Worker("cmd", true);
-            cmdWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, 1000, () =>
+            var cmdWorker = mWorkerDict["cmd"] = new Worker("cmd");
+            cmdWorker.PushJob(new JobOnce(DateTime.UtcNow, () =>
             {
-                if (shutdownTokenSource.IsCancellationRequested)
-                    return;
-                string inputs = Console.ReadLine().ToUpper();
-                string[] cmds = inputs.Split(' ');
-                if (cmds.Length < 1)
-                    return;
-                switch (cmds[0])
+                while (shutdownTokenSource.IsCancellationRequested == false)
                 {
-                    case "TEST":
-                        {
-                            //do something
-                        }
-                        break;
-                    case "EXIT":
-                        shutdownTokenSource.Cancel();
-                        break;
+                    string inputs = Console.ReadLine().ToUpper();
+                    string[] cmds = inputs.Split(' ');
+                    if (cmds.Length < 1)
+                        return;
+                    switch (cmds[0])
+                    {
+                        case "EXIT":
+                            shutdownAct?.Invoke();
+                            break;
+                    }
                 }
             }));
         }
@@ -129,9 +129,35 @@ namespace server
 
         public override void Start()
         {
-            mWorkerDict["pkg"].WorkStart();
-            mWorkerDict["hb"].WorkStart();
-            mWorkerDict["cmd"].WorkStart();
+            Task.Factory.StartNew(async ()=> {
+                while (shutdownTokenSource.IsCancellationRequested == false)
+                {
+                    var sock = mListener.Sock.Accept();
+                    var newSid = SessionMgr.Inst.GetNextSessionId();
+                    CoreSession session = new CoreSession(newSid, new CoreTCP(sock));
+                    {
+                        //todo : new session created
+                    }
+                    SessionMgr.Inst.AddSession(session);
+                    await Task.Factory.StartNew(async () =>
+                    {
+                        while (shutdownTokenSource.IsCancellationRequested == false
+                        && session.Sock.Sock.Connected)
+                        {
+                            Packet p = await session.OnRecvTAP(() => {
+                                //todo : session closed action
+                            });
+                            packageQ.Push(new Package(session, p));
+                        }
+                    }, TaskCreationOptions.DenyChildAttach);
+                }
+            });
+
+            foreach (var ele in mWorkerDict)
+            {
+                logger.WriteDebug($"{ele.Key} work is start");
+                ele.Value.WorkStart();
+            }
         }
 
         public bool IsShutdownRequested()
@@ -217,18 +243,17 @@ namespace server
             MmoCorePacket p = new MmoCorePacket(_p);
             switch (p.cType)
             {
-                case CONTENT_TYPE.NONE:
-                    break;
-                case CONTENT_TYPE.TEST:
+                case CONTENT_TYPE.HELLO:
                     {
-                        logger.WriteDebug($"[{_s.SessionId}] send Test Packet_Req");
+                        logger.WriteDebug($"recv hello packet from {_s.SessionId}");
+                        //send welcome, contain session id
+                        WelcomePacket wc = new WelcomePacket();
+                        wc.sId = _s.SessionId;
+                        wc.PacketWrite();
+                        await _s.OnSendTAP(wc.packet);
                     }
                     break;
-                case CONTENT_TYPE.HB_CHECK:
-                    break;
                 case CONTENT_TYPE.RMC:
-                    break;
-                case CONTENT_TYPE.END:
                     break;
                 default:
                     break;

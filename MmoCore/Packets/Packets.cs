@@ -21,15 +21,16 @@ namespace MmoCore.Packets
 
         public MmoCorePacket(Packet _p) : base(_p)
         {
-            var ret = _p as MmoCorePacket;
-            if (ret != default(MmoCorePacket))
-                cType = ret.cType;
+            ReadContentType();
+        }
+
+        private void ReadContentType()
+        {
+            cType = Translate.Read<CONTENT_TYPE>(data);
         }
 
         public override void PacketRead()
         {
-            base.PacketRead();
-            cType = (CONTENT_TYPE)Translate.Read<ushort>(data);
         }
 
         public override void PacketWrite()
@@ -38,76 +39,104 @@ namespace MmoCore.Packets
             Translate.Write(data, (ushort)cType);
         }
     }
-    //clinet to server
-    public class HelloPacket : MmoCorePacket
+
+    public class HBNoti 
     {
-        public HelloPacket() : base(PACKET_TYPE.REQ, CONTENT_TYPE.HELLO)
+        public MmoCorePacket packet { get; private set; }
+        public HBNoti()
         {
-
+            packet = new MmoCorePacket(Packet.PACKET_TYPE.NOTI, CONTENT_TYPE.HB_CHECK);
         }
-        public override void PacketRead()
+        public HBNoti(MmoCorePacket _packet)
         {
-            base.PacketRead();
+            packet = _packet;
         }
 
-        public override void PacketWrite()
+        public void PacketRead()
         {
-            base.PacketWrite();
+        }
+
+        public void PacketWrite()
+        {
+            packet.PacketWrite();
+            packet.UpdateHeader();
         }
     }
 
-    public class WelcomePacket : MmoCorePacket
+
+    //clinet to server
+    public class HelloPacket 
     {
+        public MmoCorePacket packet { get; set; }
+        public HelloPacket() 
+        {
+            packet = new MmoCorePacket(Packet.PACKET_TYPE.REQ, CONTENT_TYPE.HELLO);
+        }
+        public HelloPacket(MmoCorePacket _p)
+        {
+            packet = _p;
+        }
+        public void PacketRead()
+        {
+        }
+
+        public void PacketWrite()
+        {
+            packet.PacketWrite();
+            packet.UpdateHeader();
+        }
+    }
+
+    public class WelcomePacket
+    {
+        public MmoCorePacket packet { get; set; }
         public long sId { get; set; }
 
-        public WelcomePacket() : base(PACKET_TYPE.ANS, CONTENT_TYPE.WELCOME)
+        public WelcomePacket() 
         {
+            packet = new MmoCorePacket(Packet.PACKET_TYPE.ANS, CONTENT_TYPE.WELCOME);
+        }
+        public WelcomePacket(MmoCorePacket _p)
+        {
+            packet = _p;
+        }
+        public void PacketRead()
+        {
+            sId = Translate.Read<long>(packet.data);
         }
 
-        public WelcomePacket(MmoCorePacket _p) : base(_p)
+        public void PacketWrite()
         {
-            var p = _p as WelcomePacket;
-            if (p != null)
-                cType = p.cType;
-        }
-
-        public override void PacketRead()
-        {
-            base.PacketRead();
-            sId = Translate.Read<long>(data);
-        }
-
-        public override void PacketWrite()
-        {
-            base.PacketWrite();
-            Translate.Write(data, sId);
+            packet.PacketWrite();
+            Translate.Write(packet.data, sId);
+            packet.UpdateHeader();
         }
     }
 
-    public class ChatNoti : MmoCorePacket
+    public class ChatNoti 
     {
+        public MmoCorePacket packet { get; set; }
+
         public string msg;
 
-        public ChatNoti() : base(PACKET_TYPE.NOTI, CONTENT_TYPE.CHAT)
-        { }
-
-        public ChatNoti(Packet _p) : base(_p)
+        public ChatNoti()
         {
-            var p = _p as ChatNoti;
-            if (p != null)
-                cType = p.cType;
+            packet = new MmoCorePacket(Packet.PACKET_TYPE.NOTI, CONTENT_TYPE.CHAT);
+        }
+        public ChatNoti(MmoCorePacket _p)
+        {
+            packet = _p;
+        }
+        public void PacketRead()
+        {
+            msg = Translate.Read<string>(packet.data);
         }
 
-        public override void PacketRead()
+        public void PacketWrite()
         {
-            base.PacketRead();
-            msg = Translate.Read<string>(data);
-        }
-
-        public override void PacketWrite()
-        {
-            base.PacketWrite();
-            Translate.Write(data, msg);
+            packet.PacketWrite();
+            Translate.Write(packet.data, msg);
+            packet.UpdateHeader();
         }
     }
 }

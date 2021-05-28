@@ -1,4 +1,5 @@
-﻿using common.Sockets;
+﻿using common.Protocols;
+using common.Sockets;
 using common.Utils.Loggers;
 using System;
 using System.Collections.Generic;
@@ -108,6 +109,77 @@ namespace common.Networking
             dh_iv = _iv;
         }
 
+        public async Task<bool> OnSendTAP(Packet _p, Action _closed = null)
+        {
+            int remainCnt = Packet.GetHeaderSize();
+            int dataLength = _p.GetHeader();
+            int offset = 0;
+            while (remainCnt > 0)
+            {
+                offset = _p.header.bytes.Length - remainCnt;
+                var sentCnt = Sock.Sock.Send(_p.header.bytes, offset, remainCnt, System.Net.Sockets.SocketFlags.None);
+                if (sentCnt < 1)
+                {
+                    //todo : session closed
+                    _closed?.Invoke();
+                }
+                remainCnt -= sentCnt;
+            }
+
+            remainCnt = dataLength;
+            offset = 0;
+            while (remainCnt > 0)
+            {
+                offset = dataLength - remainCnt;
+                var sentCnt = Sock.Sock.Send(_p.data.bytes, offset, remainCnt, System.Net.Sockets.SocketFlags.None);
+                if (sentCnt < 1)
+                {
+                    //todo : session closed
+                    _closed?.Invoke();
+                }
+                remainCnt -= sentCnt;
+            }
+
+
+            return false;
+        }
+
+        public async Task<Packet> OnRecvTAP(Action _closed = null)
+        {
+            var ret = default(Packet);
+            int offset = 0;
+            int remainCnt = Packet.GetHeaderSize();
+            NetStream header = new NetStream(remainCnt);
+            while (remainCnt > 0)
+            {
+                offset = header.bytes.Length - remainCnt;
+                int recvCnt = Sock.Sock.Receive(header.bytes, offset, remainCnt, System.Net.Sockets.SocketFlags.None);
+                if (recvCnt < 1)
+                {
+                    //todo : session closed
+                    _closed?.Invoke();
+                }
+                remainCnt -= recvCnt;
+            }
+
+            int dataLength = header.ReadInt32();
+            offset = 0;
+            remainCnt = dataLength;
+            NetStream data = new NetStream(dataLength);
+            while (remainCnt > 0)
+            {
+                offset = dataLength - remainCnt;
+                int recvCvnt = Sock.Sock.Receive(data.bytes, offset, remainCnt, System.Net.Sockets.SocketFlags.None);
+                if (recvCvnt < 1)
+                {
+                    //todo : session closed
+                    _closed?.Invoke();
+                }
+                remainCnt -= recvCvnt;
+            }
+
+            return ret;
+        }
         #endregion
     }
 }
