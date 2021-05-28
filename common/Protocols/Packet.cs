@@ -51,7 +51,7 @@ namespace common.Protocols
             pType = _p.pType;
         }
 
-        protected Packet(NetStream _h, NetStream _d)
+        public Packet(NetStream _h, NetStream _d)
         {
             header = _h;
             data = _d;

@@ -5,6 +5,7 @@ using common.Sockets;
 using common.Utils.Loggers;
 using MmoCore.Enums;
 using MmoCore.Packets;
+using MmoCore.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,19 +41,14 @@ namespace server
 
                 logger.WriteDebugWarn($"call CloseAllSession");
                 SessionMgr.Inst.CloseAllSession();
-
-                int delaySec = 30;
-                logger.WriteDebugWarn($"server down after {delaySec} Sec");
-                while (delaySec > 0)
-                {
-                    logger.WriteDebugWarn($"{delaySec}");
-                    Thread.Sleep(1000 * 1);
-                    delaySec--;
-                }
-
+                
                 Console.Write("Server is down");
-                Console.ReadKey();
             };
+        }
+
+        private void ReadyTranslate()
+        {
+            MmoTranslate.Init();
         }
 
         private void BindAndListen()
@@ -60,10 +56,11 @@ namespace server
             mListener.Sock.Bind(ep);
             mListener.Sock.Listen(100);
         }
+        
         private void ReadyWorkers()
         {
-            var pkgWorker = mWorkerDict["pkg"] = new Worker("pkg", true);
-            pkgWorker.PushJob(new JobOnce(DateTime.UtcNow, async () =>
+            mWorkerDict["pkg"] = new Worker("pkg", true);
+            mWorkerDict["pkg"].PushJob(new JobOnce(DateTime.MinValue, async () =>
             {
                 while (shutdownTokenSource.IsCancellationRequested == false)
                 {
@@ -79,10 +76,10 @@ namespace server
                 }
             }));
 
-            var hpCheckWorker = mWorkerDict["hb"] = new Worker("hb");
+            mWorkerDict["hb"] = new Worker("hb");
             
             long hbCehckTicks = TimeSpan.FromMilliseconds(CoreSession.hbDelayMilliSec).Ticks;
-            hpCheckWorker.PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, hbCehckTicks, () =>
+            mWorkerDict["hb"].PushJob(new JobNormal(DateTime.MinValue, DateTime.MaxValue, hbCehckTicks, () =>
             {
                 if (shutdownTokenSource.IsCancellationRequested)
                     return;
@@ -102,8 +99,8 @@ namespace server
                 }
             }));
 
-            var cmdWorker = mWorkerDict["cmd"] = new Worker("cmd");
-            cmdWorker.PushJob(new JobOnce(DateTime.UtcNow, () =>
+            mWorkerDict["cmd"] = new Worker("cmd");
+            mWorkerDict["cmd"].PushJob(new JobOnce(DateTime.MinValue, () =>
             {
                 while (shutdownTokenSource.IsCancellationRequested == false)
                 {
@@ -120,9 +117,10 @@ namespace server
                 }
             }));
         }
-        //음.....우선 단일 로비홀 -> 룸 으로 할까.
+
         public override void ReadyToStart()
         {
+            ReadyTranslate();
             BindAndListen();
             ReadyWorkers();
         }
@@ -139,7 +137,7 @@ namespace server
                         //todo : new session created
                     }
                     SessionMgr.Inst.AddSession(session);
-                    await Task.Factory.StartNew(async () =>
+                    Task.Factory.StartNew(async () =>
                     {
                         while (shutdownTokenSource.IsCancellationRequested == false
                         && session.Sock.Sock.Connected)
@@ -147,7 +145,8 @@ namespace server
                             Packet p = await session.OnRecvTAP(() => {
                                 //todo : session closed action
                             });
-                            packageQ.Push(new Package(session, p));
+                            if(p != default(Packet))
+                                packageQ.Push(new Package(session, p));
                         }
                     }, TaskCreationOptions.DenyChildAttach);
                 }
@@ -196,11 +195,6 @@ namespace server
             {
                 case CONTENT_TYPE.NONE:
                     break;
-                case CONTENT_TYPE.TEST:
-                    {
-                        logger.WriteDebug($"[{_s.SessionId}] send Test Packet_Ans");
-                    }
-                    break;
                 case CONTENT_TYPE.HB_CHECK:
                     break;
                 case CONTENT_TYPE.END:
@@ -217,11 +211,6 @@ namespace server
             switch (p.cType)
             {
                 case CONTENT_TYPE.NONE:
-                    break;
-                case CONTENT_TYPE.TEST:
-                    {
-                        logger.WriteDebug($"[{_s.SessionId}] send Test Packet_Noti");
-                    }
                     break;
                 case CONTENT_TYPE.HB_CHECK:
                     {
@@ -250,7 +239,8 @@ namespace server
                         WelcomePacket wc = new WelcomePacket();
                         wc.sId = _s.SessionId;
                         wc.PacketWrite();
-                        await _s.OnSendTAP(wc.packet);
+                        if (await _s.OnSendTAP(wc.packet))
+                            logger.WriteDebug($"send welcome to {_s.SessionId}");
                     }
                     break;
                 case CONTENT_TYPE.RMC:

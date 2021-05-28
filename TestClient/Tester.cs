@@ -4,6 +4,7 @@ using common.Protocols;
 using common.Sockets;
 using common.Utils.Loggers;
 using MmoCore.Packets;
+using MmoCore.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace TestClient
         public string host { get; private set; } = "127.0.0.1";
         public int port { get; private set; } = 30000;
 
-        private Dictionary<string, Worker> workerMap;
+        private Dictionary<string, Worker> workerMap = new Dictionary<string, Worker>();
         private Log4Logger logger = new Log4Logger();
 
         private CancellationTokenSource cts = new CancellationTokenSource();
@@ -97,8 +98,14 @@ namespace TestClient
             }));
         }
 
+        private void ReadyTranslate()
+        {
+            MmoTranslate.Init();
+        }
+
         public override void ReadyToStart()
         {
+            ReadyTranslate();
             ReadyWorker();
         }
 
@@ -112,31 +119,46 @@ namespace TestClient
         public override void Start()
         {
             //after connect complete, worker start
-            try
+            int tryCnt = 0;
+            while (true)
             {
-                logger.WriteDebug("Tester Connect Start");
-                Connect();
-                logger.WriteDebug("Tester Connect Complete");
-
-                foreach (var ele in workerMap)
+                try
                 {
-                    logger.WriteDebug($"{ele.Key} is start");
-                    ele.Value.WorkStart();
+                    if (++tryCnt == 10)
+                        break;
+                    logger.WriteDebug($"try connect to server.....{tryCnt}");
+                    Connect();
+                    logger.WriteDebug("connect complete");
+                    break;
                 }
-
-                //send hello packet
-                Task.Factory.StartNew(async () => {
-                    var hello = new HelloPacket();
-                    hello.packet.PacketWrite();
-                    await tSession.OnSendTAP(hello.packet);
-                });
-
+                catch (Exception e)
+                {
+                    logger.Error(e.ToString());
+                    throw e;
+                }
             }
-            catch (Exception e)
+
+            if (tryCnt == 10)
             {
-                logger.Error(e.ToString());
-                throw e;
+                logger.Error("check server state");
+                return;
             }
+
+            foreach (var ele in workerMap)
+            {
+                logger.WriteDebug($"{ele.Key} is start");
+                ele.Value.WorkStart();
+            }
+
+            //send hello packet
+            Task.Factory.StartNew(async () => {
+                logger.WriteDebug("start send hello packet to server");
+                var hello = new HelloPacket();
+                hello.packet.PacketWrite();
+                if(await tSession.OnSendTAP(hello.packet))
+                    logger.WriteDebug("send complete");
+            });
+
         }
         #region SYNC
         protected override void Analizer_Ans(CoreSession _s, Packet _p)

@@ -122,6 +122,7 @@ namespace common.Networking
                 {
                     //todo : session closed
                     _closed?.Invoke();
+                    return false;
                 }
                 remainCnt -= sentCnt;
             }
@@ -136,12 +137,11 @@ namespace common.Networking
                 {
                     //todo : session closed
                     _closed?.Invoke();
+                    return false;
                 }
                 remainCnt -= sentCnt;
             }
-
-
-            return false;
+            return true;
         }
 
         public async Task<Packet> OnRecvTAP(Action _closed = null)
@@ -158,6 +158,7 @@ namespace common.Networking
                 {
                     //todo : session closed
                     _closed?.Invoke();
+                    return default(Packet);
                 }
                 remainCnt -= recvCnt;
             }
@@ -174,10 +175,12 @@ namespace common.Networking
                 {
                     //todo : session closed
                     _closed?.Invoke();
+                    return default(Packet);
                 }
                 remainCnt -= recvCvnt;
             }
 
+            ret = new Packet(header, data);
             return ret;
         }
         #endregion

@@ -26,6 +26,14 @@ namespace common.Jobs
 
         public override async Task<bool> TickAsync()
         {
+            DateTime nowUtc = DateTime.UtcNow;
+            if (StartDate > nowUtc)
+                return true;
+            await Task.Factory.StartNew(async () =>
+            {
+                await Task.Delay(10);
+                JobAct();
+            }, TaskCreationOptions.AttachedToParent);
             return false;
         }
     }

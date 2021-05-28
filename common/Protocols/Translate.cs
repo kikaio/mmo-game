@@ -28,6 +28,15 @@ namespace common.Protocols
         public static CoreLogger logger = new ConsoleLogger();
         public static TransDict transDict = new TransDict();
 
+        public static bool RegistCustom<T>(Writer _w, Reader _r)
+        {
+            Type t = typeof(T);
+            if (transDict.ContainsKey(t))
+                return false;
+            transDict[t] = new Translator(_w, _r);
+            return true;
+        }
+
         public static void RegistValueTypes()
         {
             transDict[typeof(byte)] = new Translator((NetStream _s, object _obj)
@@ -129,18 +138,17 @@ namespace common.Protocols
             logger.WriteDebugTrace("complete");
         }
 
-        public static void RegistCustom()
-        {
-            logger.WriteDebugTrace("complete");
-            return;
-        }
-
         public static bool Init()
         {
-            RegistValueTypes();
-
-            RegistCommonEnum();
-            RegistCustom();
+            try
+            {
+                RegistValueTypes();
+                RegistCommonEnum();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
             return true;
         }
 
