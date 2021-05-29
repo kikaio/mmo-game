@@ -19,3 +19,4 @@ UnityClient/Library/ShaderCache/
 UnityClient/Library/StateCache/
 UnityClient/Library/PackageCache/
 UnityClient/Library/Artifacts/
+*.log
