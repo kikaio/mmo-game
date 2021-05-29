@@ -15,3 +15,7 @@ clientForUnity/bin/
 server/bin/Debug/
 TestClient/obj/Debug/
 TestClient/bin/
+UnityClient/Library/ShaderCache/
+UnityClient/Library/StateCache/
+UnityClient/Library/PackageCache/
+UnityClient/Library/Artifacts/
