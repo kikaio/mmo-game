@@ -404,7 +404,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 12
+    m_FontSize: 10
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -415,7 +415,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: My Ip
+  m_Text: My Public Ip
 --- !u!222 &192554212
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -437,7 +437,7 @@ GameObject:
   - component: {fileID: 193458267}
   - component: {fileID: 193458266}
   m_Layer: 7
-  m_Name: Button
+  m_Name: ConnBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -506,7 +506,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 193458267}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1073443556}
+        m_TargetAssemblyTypeName: Scene, Assembly-CSharp
+        m_MethodName: ClickConnectBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &193458267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1271,6 +1283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1073443555}
+  - component: {fileID: 1073443556}
   m_Layer: 0
   m_Name: SceneObj
   m_TagString: Untagged
@@ -1293,6 +1306,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1073443556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073443554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b6197c6724cdf49951eaaf3d903cb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyIpTxt: {fileID: 1654361950}
+  MyPortTxt: {fileID: 798408979}
+  ConnToIpTxt: {fileID: 1700523742}
+  ConnToPortTxt: {fileID: 804336179}
 --- !u!1 &1159462818
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1414,7 @@ GameObject:
   - component: {fileID: 1344488922}
   - component: {fileID: 1344488921}
   m_Layer: 7
-  m_Name: Button
+  m_Name: CheckBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1454,7 +1483,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1344488922}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1073443556}
+        m_TargetAssemblyTypeName: Scene, Assembly-CSharp
+        m_MethodName: ClickCheckBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &1344488922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1650,7 +1691,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Conn TO
+  m_Text: Public Ip Conn To
 --- !u!222 &1541950654
 CanvasRenderer:
   m_ObjectHideFlags: 0
