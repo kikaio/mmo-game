@@ -23,6 +23,7 @@ UnityClient/Library/Artifacts/
 UnityClient/obj/Debug/
 UnityClient/Temp/
 UnityClient/Library/EditorInstance.json
+UnityClient/Library/SceneVisibilityState.asset
 UnityClient/Library/ScriptAssemblies/
 UnityClient/Library/PackageManager/ProjectCache.md5
 UnityClient/Library/CurrentLayout-default.dwlt
