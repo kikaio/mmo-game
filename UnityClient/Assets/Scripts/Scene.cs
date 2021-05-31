@@ -93,8 +93,19 @@ public class Scene : MonoBehaviour
 
     public void ClickCheckBtn()
     {
-        UnityEngine.Debug.Log($"ClickCheckBtn");
         GetPublicHostName();
+    }
+
+    public void ClickRunBtn()
+    {
+        //server program name
+        string psName = "";
+        //port forwarding을 위한 shell script
+        string shellName = "";
+        //현재 port는 30000번으로 고정된 상태.
+        //Shell 실행 후 port forwarding, server process 실행.
+        FileUtils.RunShell(shellName, true);
+        FileUtils.RunProgram(psName);
     }
 
 }

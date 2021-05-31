@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{6C9E1067-45D3-8D51-00C4-572C36C1182E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -56,6 +57,8 @@
     <Compile Include="Assets\Scripts\Scene.cs" />
     <Compile Include="Assets\Scripts\Utils\FileUtils.cs" />
     <Compile Include="Assets\Scripts\Networking\NetClient.cs" />
+    <Compile Include="Assets\SelectCharacter.cs" />
+    <Compile Include="Assets\SelectSceneObj.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

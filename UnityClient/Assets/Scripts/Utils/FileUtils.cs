@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public static class FileUtils
 {
 
     //특정 shell 실행가능?
-    public static void RunProcess(string _cmd, bool _isShell, string _args = null)
+    public static async Task RunShell (string _cmd, bool _isShell, string _args = null)
     {
         string projDir = Directory.GetCurrentDirectory();
         _cmd = $"{projDir}/{_cmd}";
@@ -48,5 +49,31 @@ public static class FileUtils
         });
 
         shellThread.Start();
+    }
+
+    public static async Task RunProgram(string _name)
+    {
+        ProcessStartInfo psi = new ProcessStartInfo();
+        Process ps = new Process();
+        psi.FileName = _name;
+        psi.RedirectStandardOutput = true;
+        psi.UseShellExecute = false;
+        ps.StartInfo = psi;
+        ps.EnableRaisingEvents = true;
+
+        ps.Exited += (sender, e) =>
+        {
+            UnityEngine.Debug.Log("process is exited");
+        };
+        string psName = "";
+        Process[] isRun= Process.GetProcessesByName(psName);
+        if (isRun.Length == 0)
+        {
+            ps.Start();
+            var handle = ps.Handle;
+        }
+        ps.Close();
+        ps.Dispose();
+        return;
     }
 }
