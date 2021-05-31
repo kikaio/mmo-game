@@ -21,3 +21,4 @@ UnityClient/Library/PackageCache/
 UnityClient/Library/Artifacts/
 *.log
 UnityClient/obj/Debug/
+UnityClient/Temp/
