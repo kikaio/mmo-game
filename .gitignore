@@ -52,7 +52,7 @@ UnityClient/UserSettings/
 UnityClient/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
-UnityClient/Assets/**/*.meta
+#UnityClient/Assets/**/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
