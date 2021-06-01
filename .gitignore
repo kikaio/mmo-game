@@ -8,7 +8,7 @@ MmoClient/Library/
 MmoClient/Logs/
 MmoClient/obj/
 MmoClient/Temp/
-*.meta
+#*.meta
 common/bin/
 MmoCore/bin/
 clientForUnity/bin/
