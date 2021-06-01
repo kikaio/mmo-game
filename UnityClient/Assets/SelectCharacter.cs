@@ -25,6 +25,8 @@ public class SelectCharacter : MonoBehaviour
 
     ESELECT_TYPE curSelectType = ESELECT_TYPE.NONE;
 
+    public bool IsConfirmed { get; private set; } = false;
+
     public void Awake()
     {
         SelectPlayer(0);
@@ -40,7 +42,6 @@ public class SelectCharacter : MonoBehaviour
         else
             nextState = ESELECT_TYPE.NONE;
 
-        faceObj.SetActive(false);
         selectorObj.SetActive(false);
 
         switch (nextState)
@@ -48,12 +49,12 @@ public class SelectCharacter : MonoBehaviour
 
             case ESELECT_TYPE.NONE:
                 {
+                    faceObj.GetComponent<SpriteRenderer>().sprite = originFace;
                 }
                 break;
             case ESELECT_TYPE.P1:
                 {
                     faceObj.GetComponent<SpriteRenderer>().sprite = ActivateFace;
-                    faceObj.SetActive(true);
                     selectorObj.GetComponent<SpriteRenderer>().sprite = selectP1;
                     selectorObj.SetActive(true);
                 }
@@ -61,7 +62,6 @@ public class SelectCharacter : MonoBehaviour
             case ESELECT_TYPE.P2:
                 {
                     faceObj.GetComponent<SpriteRenderer>().sprite = ActivateFace;
-                    faceObj.SetActive(true);
                     selectorObj.GetComponent<SpriteRenderer>().sprite = selectP2;
                     selectorObj.SetActive(true);
                 }
@@ -71,12 +71,9 @@ public class SelectCharacter : MonoBehaviour
         }
     }
 
-    public void SetSelected(bool _selected)
+    public void ConfirmCharacter(int _pid)
     {
-        if (true)
-        { }
-        else
-        {
-        }
+        faceObj.GetComponent<SpriteRenderer>().sprite = confirmFace;
+        IsConfirmed = true;
     }
 }

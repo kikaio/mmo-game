@@ -10,7 +10,8 @@ public class SelectSceneObj : MonoBehaviour
     private int curPlayerCnt = 0;
 
     //todo : server 한테 input 받기.
-    private int[] pId = new int[Character_max];
+    private int[] cArr = new int[Character_max];
+
 
     public SelectSceneObj()
         : this(2)
@@ -24,13 +25,50 @@ public class SelectSceneObj : MonoBehaviour
 
     public void Start()
     {
-        var no = 1;
-        for (int idx = 0; idx < curPlayerCnt; ++idx)
+        for (int idx = 0, no = 1; idx < curPlayerCnt; ++idx, ++no)
         {
-            pId[idx] = no;
-            var character = CharacterList[idx].GetComponent<SelectCharacter>();
-            character.SelectPlayer(no);
-            no++;
+            SetPlayerCharacter(idx, no);
         }
+    }
+
+    private int GetPlayerCharacterIdx(int _pNo)
+    {
+        for (int idx = 0; idx < Character_max; ++idx)
+        {
+            if (cArr[idx] == _pNo)
+                return idx;
+        }
+        return 0;
+    }
+
+    private void SetPlayerCharacter(int _idx, int _pNo)
+    {
+        cArr[_idx] = _pNo;
+        var character = CharacterList[_idx].GetComponent<SelectCharacter>();
+        character.SelectPlayer(_pNo);
+    }
+
+    public void SelectLeft(int _pNo)
+    {
+        int curIdx = GetPlayerCharacterIdx(_pNo);
+        SetPlayerCharacter(curIdx, 0);
+        curIdx--;
+        if (curIdx < 0)
+            curIdx = Character_max - 1;
+        while (cArr[curIdx] != 0)
+            curIdx--;
+        SetPlayerCharacter(curIdx, _pNo);
+    }
+
+    public void SelectRight(int _pNo)
+    {
+        int curIdx = GetPlayerCharacterIdx(_pNo);
+        SetPlayerCharacter(curIdx, 0);
+        curIdx++;
+        if (curIdx >= Character_max)
+            curIdx = 0;
+        while (cArr[curIdx] != 0)
+            curIdx++;
+        SetPlayerCharacter(curIdx, _pNo);
     }
 }
