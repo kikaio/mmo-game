@@ -51,29 +51,43 @@ public static class FileUtils
         shellThread.Start();
     }
 
-    public static async Task RunProgram(string _name)
+    public static async Task KillProcessByName(string _name)
     {
-        ProcessStartInfo psi = new ProcessStartInfo();
-        Process ps = new Process();
-        psi.FileName = _name;
-        psi.RedirectStandardOutput = true;
-        psi.UseShellExecute = false;
-        ps.StartInfo = psi;
-        ps.EnableRaisingEvents = true;
-
-        ps.Exited += (sender, e) =>
+        foreach (var proc in Process.GetProcesses())
         {
-            UnityEngine.Debug.Log("process is exited");
-        };
-        string psName = "";
-        Process[] isRun= Process.GetProcessesByName(psName);
-        if (isRun.Length == 0)
-        {
-            ps.Start();
-            var handle = ps.Handle;
+            if (proc.ProcessName == _name)
+                proc.Kill();
         }
-        ps.Close();
-        ps.Dispose();
+    }
+
+    public static async Task RunServerProcess(string _path, string _name, int _portNo)
+    {
+        try
+        {
+            if (_portNo < 0)
+            {
+                UnityEngine.Debug.LogError($"Server port set is invalid");
+                return;
+            }
+
+            await KillProcessByName(_name);
+            string curPath = System.Environment.CurrentDirectory;
+            string processPath = $@"{_path}\{_name}";
+            
+            using (var newPs = Process.Start(processPath, $"{_portNo}"))
+            {
+
+                newPs.Exited += (sender, e) =>
+                {
+                    UnityEngine.Debug.Log("process is exited");
+                };
+            }
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.LogError($"{e.ToString()}");
+            throw;
+        }
         return;
     }
 }

@@ -160,8 +160,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 224.05, y: 30}
-  m_SizeDelta: {x: 69.11, y: 30}
+  m_AnchoredPosition: {x: 217, y: 30}
+  m_SizeDelta: {x: 65, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &56571151
 MonoBehaviour:
@@ -336,7 +336,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Connect
+  m_Text: Join
 --- !u!222 &184846591
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -379,8 +379,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -13.9, y: 30.000002}
-  m_SizeDelta: {x: 56.29, y: 30}
+  m_AnchoredPosition: {x: -16.76, y: 30.000002}
+  m_SizeDelta: {x: 65, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &192554211
 MonoBehaviour:
@@ -508,7 +508,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1073443556}
-        m_TargetAssemblyTypeName: Scene, Assembly-CSharp
+        m_TargetAssemblyTypeName: LobbyScene, Assembly-CSharp
         m_MethodName: ClickConnectBtn
         m_Mode: 1
         m_Arguments:
@@ -594,7 +594,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -196, y: -101.20002}
+  m_AnchoredPosition: {x: -172.3, y: -92.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &444061189
@@ -1083,14 +1083,14 @@ RectTransform:
   m_GameObject: {fileID: 857182332}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1910576448}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 193.15, y: 30}
+  m_AnchoredPosition: {x: 167.8, y: 30}
   m_SizeDelta: {x: 386.28, y: -60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &857182334
@@ -1285,7 +1285,7 @@ GameObject:
   - component: {fileID: 1073443555}
   - component: {fileID: 1073443556}
   m_Layer: 0
-  m_Name: SceneObj
+  m_Name: LobbySceneObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1315,13 +1315,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1073443554}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79b6197c6724cdf49951eaaf3d903cb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5882b1719324bac4791068e9c8a614fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyIpTxt: {fileID: 1654361950}
-  MyPortTxt: {fileID: 798408979}
-  ConnToIpTxt: {fileID: 1700523742}
-  ConnToPortTxt: {fileID: 804336179}
+  MyIpTxt: {fileID: 610294852}
+  MyPortTxt: {fileID: 56571151}
+  ConnToIpTxt: {fileID: 901141713}
+  ConnToPortTxt: {fileID: 1548209548}
 --- !u!1 &1159462818
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,7 +1437,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 295.71, y: 30}
+  m_AnchoredPosition: {x: 287.36, y: 30}
   m_SizeDelta: {x: 66.02, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1344488921
@@ -1485,7 +1485,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1073443556}
-        m_TargetAssemblyTypeName: Scene, Assembly-CSharp
+        m_TargetAssemblyTypeName: LobbyScene, Assembly-CSharp
         m_MethodName: ClickCheckBtn
         m_Mode: 1
         m_Arguments:
@@ -1560,7 +1560,7 @@ RectTransform:
   m_GameObject: {fileID: 1406047001}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 90, y: 90, z: 1}
+  m_LocalScale: {x: 80, y: 80, z: 1}
   m_Children: []
   m_Father: {fileID: 1839119431}
   m_RootOrder: 0
@@ -1610,12 +1610,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4980c89c6771c404298939f03033492f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2db722f939273844899e4f6c888987ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 6.16, y: 3.53}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1657,8 +1657,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 382, y: 30}
-  m_SizeDelta: {x: 85.1, y: 30}
+  m_AnchoredPosition: {x: 352.84, y: 30}
+  m_SizeDelta: {x: 56.86, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1515501280
 MonoBehaviour:
@@ -1705,7 +1705,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1073443556}
-        m_TargetAssemblyTypeName: Scene, Assembly-CSharp
+        m_TargetAssemblyTypeName: LobbyScene, Assembly-CSharp
         m_MethodName: ClickRunBtn
         m_Mode: 1
         m_Arguments:
@@ -2349,7 +2349,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ServerRun
+  m_Text: Start
 --- !u!222 &1713473121
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2577,7 +2577,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -196, y: -145}
+  m_AnchoredPosition: {x: -172.3, y: -136.1}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1965229404
