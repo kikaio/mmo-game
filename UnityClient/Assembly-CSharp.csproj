@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{6C9E1067-45D3-8D51-00C4-572C36C1182E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -54,11 +53,13 @@
     <UnityVersion>2020.3.7f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\SceneSelect\SelectSceneObj.cs" />
     <Compile Include="Assets\Scripts\Utils\FileUtils.cs" />
+    <Compile Include="Assets\Scripts\SceneSelect\SelectCharacter.cs" />
     <Compile Include="Assets\Scripts\SceneLobby\LobbyScene.cs" />
     <Compile Include="Assets\Scripts\Networking\NetClient.cs" />
-    <Compile Include="Assets\Scripts\SceneSelect\SelectCharacter.cs" />
-    <Compile Include="Assets\Scripts\SceneSelect\SelectSceneObj.cs" />
+    <Compile Include="Assets\Scripts\Networking\Networker.cs" />
+    <Compile Include="Assets\Scripts\UnityObjects\NetConnObj.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -282,6 +283,60 @@
     </Reference>
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>D:\Unity\2020.3.7f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="Ubiety.Dns.Core">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\Ubiety.Dns.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="common">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\common.dll</HintPath>
+    </Reference>
+    <Reference Include="Zstandard.Net">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\Zstandard.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\K4os.Compression.LZ4.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Hash.xxHash">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\K4os.Hash.xxHash.dll</HintPath>
+    </Reference>
+    <Reference Include="MmoCore">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\MmoCore.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.EntityFramework">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\MySql.Data.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4.Streams">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\K4os.Compression.LZ4.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\MMoCommon\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>D:\Unity\2020.3.7f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>

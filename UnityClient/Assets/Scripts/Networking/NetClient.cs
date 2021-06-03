@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
-
+//for p2p?
 public class NetClient
 {
     public static NetClient Inst { get; private set; }
