@@ -24,7 +24,7 @@ namespace server
         Dictionary<string, Worker> mWorkerDict = new Dictionary<string, Worker>();
         CancellationTokenSource shutdownTokenSource = new CancellationTokenSource();
 
-        public MmoServer() : base("MMO", 30000)
+        public MmoServer(int _port = 30000) : base("MMO", _port)
         {
             logger = new Log4Logger();
             logger.WriteDebug("Server Start");
