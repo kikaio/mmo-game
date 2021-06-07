@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyScene : MonoBehaviour
@@ -19,6 +20,14 @@ public class LobbyScene : MonoBehaviour
     public InputField ConnToIpTxt;
     public InputField ConnToPortTxt;
 
+    public LobbyLog lobbyLog;
+
+    private CancellationTokenSource cst = new CancellationTokenSource();
+    private string serverProcessName = "server.exe";
+    private string folderName = "Debug";
+
+    private Networker lobbyNetworker;
+    private AsyncOperation selectSceneOp;
 #if TESTING
     bool isTest = true;
 #else
@@ -39,24 +48,45 @@ public class LobbyScene : MonoBehaviour
             return ret;
         } }
 
-    public string ConnToIp { get {
-            return ConnToIpTxt?.text ?? string.Empty;
-        } }
-    public int ConnToPort { get {
-            int ret = default(int);
-            if (int.TryParse(ConnToPortTxt.text, out ret) == false)
-                return -1;
-            return ret;
-        } }
-
     public void ClickConnectBtn()
     {
-        UnityEngine.Debug.Log($"ClickConnectBtn");
         //todo : connect to other player's server
-        if (ConnToPort < 0)
+        if(NetClient.Inst.PublicPort <= 0)
             return;
-        if (ConnToIp == string.Empty)
+        if (string.IsNullOrWhiteSpace(NetClient.Inst.PublicIp))
             return;
+        UnityEngine.Debug.Log($"ClickConnectBtn");
+        lobbyLog.TryConnToLobbyServer();
+        Task.Factory.StartNew(async () => 
+        {
+            UnityEngine.Debug.Log($"Conn Task is Started");
+            lobbyNetworker = Networker.CreateNetworker("Lobby", () =>
+            {
+                UnityEngine.Debug.Log("LobbyNetworker shutdowned");
+            });
+            lobbyNetworker.ReadyToStart();
+            lobbyNetworker.SetConnToServer(NetClient.Inst.PublicIp
+                , NetClient.Inst.PublicPort);
+            lobbyNetworker.StartConnect(()=> 
+            {
+                lobbyLog.ConnToLobyyComplete();
+                //change scene to select scene
+                string sceneName = "SelectScene";
+                if (selectSceneOp.isDone)
+                    SceneManager.LoadScene(sceneName);
+                else
+                {
+                    Task.Factory.StartNew(async () => {
+                        while (selectSceneOp.isDone == false)
+                            await Task.Delay(1000);
+                        SceneManager.LoadScene(sceneName);
+                    });
+                }
+            });
+            //todo : sendPacket to server
+
+        });
+
     }
 
     private IEnumerator GetPublicHostName()
@@ -95,24 +125,23 @@ public class LobbyScene : MonoBehaviour
         yield return null;
     }
 
-    public void ClickCheckBtn()
-    {
-        StartCoroutine(GetPublicHostName());
-    }
-
     public void ClickRunBtn()
     {
         //server program name
 
         Task.Factory.StartNew(async () =>
         {
-            string psName = "server.exe";
-            string folderName = "Debug";
+            lobbyLog.TryStartLobbyServer();
+            
+            
 #if TESTING == false
         folderName = "Release";
 #endif
             string serverExePath = $@".\ServerExe\{folderName}";
-            await FileUtils.RunServerProcess(serverExePath, psName, MyPort);
+            await FileUtils.RunServerProcess(serverExePath, serverProcessName, MyPort);
+
+            lobbyLog.ServerStartComplete();
+
         }, TaskCreationOptions.DenyChildAttach);
         
         //port forwardingÀ» À§ÇÑ shell script
@@ -124,4 +153,36 @@ public class LobbyScene : MonoBehaviour
         //todo : try connect to my server
     }
 
+    public void Start()
+    {
+        StartCoroutine(GetPublicHostName());
+        StartCoroutine(AsyncLoadSelectScene());
+    }
+
+    private IEnumerator AsyncLoadSelectScene()
+    {
+        string sceneName = "SelectScene";
+        selectSceneOp = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        selectSceneOp.allowSceneActivation = false;
+        while (selectSceneOp.isDone == false)
+            yield return null;
+        UnityEngine.Debug.Log($"Scene Load Complete :{sceneName}");
+    }
+
+    public void Update()
+    {
+        //todo : must use InputSystem.
+        //todo : when pressed 'Q', must shitdown client, server process
+        //if (UnityEngine.Input.GetKey(KeyCode.Q))
+        //{
+        //    lobbyNetworker?.NetworkShutDown();
+        //    //exit game
+        //    Task.Factory.StartNew(async () =>
+        //    {
+        //        await FileUtils.KillProcessByName(serverProcessName);
+        //    });
+
+        //    cst.Cancel();
+        //}
+    }
 }

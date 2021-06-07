@@ -2,9 +2,12 @@ using common.Jobs;
 using common.Networking;
 using common.Protocols;
 using common.Sockets;
+using MmoCore.Enums;
+using MmoCore.Packets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -14,7 +17,7 @@ public class Networker : CoreNetwork, IDisposable
 {
     //ex : lobby connect, battle connect etc....
     public static Dictionary<string, Networker> nameToDic { get; private set; } = new Dictionary<string, Networker>();
-    public static Networker CreateNetworker(string _name)
+    public static Networker CreateNetworker(string _name, Action _shutDownAct = null)
     {
         if (nameToDic.ContainsKey(_name))
         {
@@ -23,6 +26,7 @@ public class Networker : CoreNetwork, IDisposable
         }
         var newWorker = new Networker();
         nameToDic[_name] = newWorker;
+        newWorker.shutdownAct = _shutDownAct;
         return newWorker;
     }
     private bool disposed = false;
@@ -63,13 +67,18 @@ public class Networker : CoreNetwork, IDisposable
         nameToWorker["pkg"].PushJob(new JobOnce(DateTime.UtcNow, ()=> {
             while(cts.IsCancellationRequested == false)
             {
-               
+                var pkg = packageQ.pop();
+                if (pkg == default(Package))
+                    continue;
+                PackageDispatcher(pkg);
             }
         }));
-        nameToWorker["recv"].PushJob(new JobOnce(DateTime.UtcNow, () => {
+
+        nameToWorker["recv"].PushJob(new JobOnce(DateTime.UtcNow, async () => {
             while (cts.IsCancellationRequested == false)
             {
-               
+                var packet = await mSession.OnRecvTAP();
+                packageQ.Push(new Package(mSession, packet));
             }
         }));
     }
@@ -85,9 +94,24 @@ public class Networker : CoreNetwork, IDisposable
         ReadyWorkers();
     }
 
+    public void StartConnect(Action _cb)
+    {
+        Start();
+        _cb?.Invoke();
+    }
+
     public override void Start()
     {
-
+        try
+        {
+            CoreTCP tcpSock = new CoreTCP();
+            tcpSock.Sock.Connect(ipStr, port);
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.LogError("Exception : Connect socket");
+            throw e;
+        }
 
         foreach (var w in nameToWorker)
         {
@@ -98,21 +122,47 @@ public class Networker : CoreNetwork, IDisposable
 
     protected override void Analizer_Ans(CoreSession _s, Packet _p)
     {
-        throw new System.NotImplementedException();
+        MmoCorePacket p = new MmoCorePacket(_p);
+        switch (p.cType)
+        {
+            case CONTENT_TYPE.WELCOME:
+                break;
+            default:
+                break;
+        }
     }
 
     protected override void Analizer_Noti(CoreSession _s, Packet _p)
     {
-        throw new System.NotImplementedException();
+        MmoCorePacket p = new MmoCorePacket(_p);
+        switch (p.cType)
+        {
+            case CONTENT_TYPE.CHAT:
+                break;
+            default:
+                break;
+        }
     }
 
     protected override void Analizer_Req(CoreSession _s, Packet _p)
     {
-        throw new System.NotImplementedException();
+        MmoCorePacket p = new MmoCorePacket(_p);
+        switch (p.cType)
+        {
+            default:
+                break;
+        }
     }
 
     protected override void Analizer_Test(CoreSession _s, Packet _p)
     {
-        throw new System.NotImplementedException();
+        MmoCorePacket p = new MmoCorePacket(_p);
+        switch (p.cType)
+        {
+            case CONTENT_TYPE.TEST:
+                break;
+            default:
+                break;
+        }
     }
 }
