@@ -1,3 +1,4 @@
+using common.Networking;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +8,14 @@ public class SelectSceneObj : MonoBehaviour
     static readonly int Character_max = 4;
     public List<GameObject> CharacterList;
 
+    private string sceneName = "SelectScene";
     private int curPlayerCnt = 0;
 
     //todo : server 한테 input 받기.
     private int[] cArr = new int[Character_max];
 
+    private Networker networker;
+    private CoreSession lobbySession;
 
     public SelectSceneObj()
         : this(2)
@@ -28,6 +32,10 @@ public class SelectSceneObj : MonoBehaviour
         for (int idx = 0, no = 1; idx < curPlayerCnt; ++idx, ++no)
         {
             SetPlayerCharacter(idx, no);
+        }
+        if (Networker.nameToDic.TryGetValue(sceneName, out networker) == false)
+        {
+            UnityEngine.Debug.Log("lobbyNetworker is not set");
         }
     }
 
@@ -71,4 +79,5 @@ public class SelectSceneObj : MonoBehaviour
             curIdx++;
         SetPlayerCharacter(curIdx, _pNo);
     }
+
 }

@@ -7,6 +7,7 @@ using MmoCore.Packets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ public class Networker : CoreNetwork, IDisposable
 
     private Dictionary<string, Worker> nameToWorker = new Dictionary<string, Worker>();
     private CancellationTokenSource cts = new CancellationTokenSource();
-    private CoreSession mSession;
+    public CoreSession mSession { get; private set; }
 
     private string ipStr;
     private int port;
@@ -61,25 +62,24 @@ public class Networker : CoreNetwork, IDisposable
 
     private void ReadyWorkers()
     {
-        nameToWorker["pkg"] = new Worker("pkg");
         nameToWorker["recv"] = new Worker("recv");
-
-        nameToWorker["pkg"].PushJob(new JobOnce(DateTime.UtcNow, ()=> {
-            while(cts.IsCancellationRequested == false)
-            {
-                var pkg = packageQ.pop();
-                if (pkg == default(Package))
-                    continue;
-                PackageDispatcher(pkg);
-            }
-        }));
-
         nameToWorker["recv"].PushJob(new JobOnce(DateTime.UtcNow, async () => {
             while (cts.IsCancellationRequested == false)
             {
                 var packet = await mSession.OnRecvTAP();
                 packageQ.Push(new Package(mSession, packet));
             }
+        }));
+
+        long hbTickDelta = TimeSpan.FromMilliseconds(CoreSession.hbDelayMilliSec).Ticks;
+
+        nameToWorker["hb"] = new Worker("hb");
+        nameToWorker["hb"].PushJob(new JobNormal(DateTime.UtcNow, DateTime.MaxValue, hbTickDelta, () => {
+            if (mSession.Sock.Sock.Connected == false)
+                return;
+            var hbPacket = new HBNoti();
+            hbPacket.PacketWrite();
+            mSession.OnSendTAP(hbPacket.packet);
         }));
     }
 
@@ -105,7 +105,8 @@ public class Networker : CoreNetwork, IDisposable
         try
         {
             CoreTCP tcpSock = new CoreTCP();
-            tcpSock.Sock.Connect(ipStr, port);
+            var ep = new IPEndPoint(IPAddress.Parse(ipStr), port);
+            tcpSock.Sock.Connect(ep);
         }
         catch (Exception e)
         {
@@ -122,47 +123,21 @@ public class Networker : CoreNetwork, IDisposable
 
     protected override void Analizer_Ans(CoreSession _s, Packet _p)
     {
-        MmoCorePacket p = new MmoCorePacket(_p);
-        switch (p.cType)
-        {
-            case CONTENT_TYPE.WELCOME:
-                break;
-            default:
-                break;
-        }
+        throw new NotImplementedException("");
     }
 
     protected override void Analizer_Noti(CoreSession _s, Packet _p)
     {
-        MmoCorePacket p = new MmoCorePacket(_p);
-        switch (p.cType)
-        {
-            case CONTENT_TYPE.CHAT:
-                break;
-            default:
-                break;
-        }
+        throw new NotImplementedException("");
     }
 
     protected override void Analizer_Req(CoreSession _s, Packet _p)
     {
-        MmoCorePacket p = new MmoCorePacket(_p);
-        switch (p.cType)
-        {
-            default:
-                break;
-        }
+        throw new NotImplementedException("");
     }
 
     protected override void Analizer_Test(CoreSession _s, Packet _p)
     {
-        MmoCorePacket p = new MmoCorePacket(_p);
-        switch (p.cType)
-        {
-            case CONTENT_TYPE.TEST:
-                break;
-            default:
-                break;
-        }
+        throw new NotImplementedException("");
     }
 }

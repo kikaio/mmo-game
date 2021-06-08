@@ -1,3 +1,5 @@
+using common.Protocols;
+using MmoCore.Packets;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +27,8 @@ public class LobbyScene : MonoBehaviour
     private CancellationTokenSource cst = new CancellationTokenSource();
     private string serverProcessName = "server.exe";
     private string folderName = "Debug";
+
+    private bool isWelcomed = false;
 
     private Networker lobbyNetworker;
     private AsyncOperation selectSceneOp;
@@ -70,24 +74,47 @@ public class LobbyScene : MonoBehaviour
             lobbyNetworker.StartConnect(()=> 
             {
                 lobbyLog.ConnToLobyyComplete();
-                //change scene to select scene
-                string sceneName = "SelectScene";
-                if (selectSceneOp.isDone)
-                    SceneManager.LoadScene(sceneName);
-                else
-                {
-                    Task.Factory.StartNew(async () => {
-                        while (selectSceneOp.isDone == false)
-                            await Task.Delay(1000);
-                        SceneManager.LoadScene(sceneName);
-                    });
-                }
+                //start send hello packet until recv welcome packet
+                StartCoroutine(SendHelloPacket());
             });
-            //todo : sendPacket to server
-
         });
 
     }
+
+    // send hello packet to lobbyserver while recv welcome packet.
+    private IEnumerator SendHelloPacket()
+    {
+        float deltaSec = 0.3f;
+        while (isWelcomed == false)
+        {
+            var hello = new HelloPacket();
+            hello.PacketWrite();
+            lobbyNetworker.mSession.OnSendTAP(hello.packet);
+            yield return new WaitForSeconds(deltaSec);
+        }
+    }
+
+
+    private void ChangeToSelectScene()
+    {
+
+        string sceneName = "SelectScene";
+        SceneManager.LoadScene(sceneName);
+
+        return;
+        //change scene to select scene
+        if (selectSceneOp.isDone)
+            SceneManager.LoadScene(sceneName);
+        else
+        {
+            Task.Factory.StartNew(async () => {
+                while (selectSceneOp.isDone == false)
+                    await Task.Delay(1000);
+                SceneManager.LoadScene(sceneName);
+            });
+        }
+    }
+
 
     private IEnumerator GetPublicHostName()
     {
@@ -156,7 +183,7 @@ public class LobbyScene : MonoBehaviour
     public void Start()
     {
         StartCoroutine(GetPublicHostName());
-        StartCoroutine(AsyncLoadSelectScene());
+        //StartCoroutine(AsyncLoadSelectScene());
     }
 
     private IEnumerator AsyncLoadSelectScene()
@@ -171,18 +198,38 @@ public class LobbyScene : MonoBehaviour
 
     public void Update()
     {
-        //todo : must use InputSystem.
-        //todo : when pressed 'Q', must shitdown client, server process
-        //if (UnityEngine.Input.GetKey(KeyCode.Q))
-        //{
-        //    lobbyNetworker?.NetworkShutDown();
-        //    //exit game
-        //    Task.Factory.StartNew(async () =>
-        //    {
-        //        await FileUtils.KillProcessByName(serverProcessName);
-        //    });
+        if (lobbyNetworker == null)
+            return;
+        var pkg = lobbyNetworker.packageQ.pop();
+        if (pkg == null)
+        {
+            lobbyNetworker.packageQ.Swap();
+            return;
+        }
+        PkgDispatcher(pkg);
+    }
 
-        //    cst.Cancel();
-        //}
+    private void PkgDispatcher(Package _pkg)
+    {
+        var packet = _pkg.packet;
+        var session = _pkg.session;
+
+        packet.ReadPacketType();
+        MmoCorePacket mp = new MmoCorePacket(packet);
+        switch (mp.cType)
+        {
+            case MmoCore.Enums.CONTENT_TYPE.TEST:
+                break;
+            case MmoCore.Enums.CONTENT_TYPE.WELCOME:
+                {
+                    UnityEngine.Debug.Log("recv welcome packet");
+                    //todo : scene change
+                    isWelcomed = true;
+                    ChangeToSelectScene();
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
