@@ -78,7 +78,6 @@ public class LobbyScene : MonoBehaviour
                 StartCoroutine(SendHelloPacket());
             });
         });
-
     }
 
     // send hello packet to lobbyserver while recv welcome packet.

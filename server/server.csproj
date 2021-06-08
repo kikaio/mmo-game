@@ -59,6 +59,8 @@
     <Compile Include="Users\User.cs" />
     <Compile Include="Users\UserSession.cs" />
     <Compile Include="Users\UserSession.LobbyRPC.cs" />
+    <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="Utils\IPUtils.cs" />
     <Compile Include="Utils\ServerMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
