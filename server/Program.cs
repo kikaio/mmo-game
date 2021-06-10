@@ -23,22 +23,6 @@ namespace server
                 var netInfo = await IPUtils.GetPublicIpStr();
                 netInfo.public_port = 30000;
                 netInfo.private_port = 30000;
-
-                //todo : should be move this setting to App.config
-                logger.WriteDebug("batch file creating started");
-                string folderPath = @".";
-                string batchName = "portfowarding.bat";
-                try
-                {
-                    await FileUtils.PortfowardBatchCreate(folderPath, batchName
-                        , netInfo.public_Ip, netInfo.private_Ip
-                        , netInfo.public_port, netInfo.private_port);
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e.ToString());
-                }
-                logger.WriteDebug("batch file create complete");
             });
 
             while (mServer.IsShutdownRequested() == false)

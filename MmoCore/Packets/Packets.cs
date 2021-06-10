@@ -31,6 +31,7 @@ namespace MmoCore.Packets
 
         public override void PacketRead()
         {
+            base.PacketRead();
         }
 
         public override void PacketWrite()

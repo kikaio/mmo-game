@@ -83,6 +83,11 @@ public class Networker : CoreNetwork, IDisposable
         }));
     }
 
+    private void ReadyTranslate()
+    {
+        MmoCore.Protocols.MmoTranslate.Init();
+    }
+
     public void SetConnToServer(string _Ip, int _port)
     {
         ipStr = _Ip;
@@ -91,6 +96,7 @@ public class Networker : CoreNetwork, IDisposable
 
     public override void ReadyToStart()
     {
+        ReadyTranslate();
         ReadyWorkers();
     }
 
@@ -107,6 +113,7 @@ public class Networker : CoreNetwork, IDisposable
             CoreTCP tcpSock = new CoreTCP();
             var ep = new IPEndPoint(IPAddress.Parse(ipStr), port);
             tcpSock.Sock.Connect(ep);
+            mSession = new CoreSession(-1, tcpSock);
         }
         catch (Exception e)
         {

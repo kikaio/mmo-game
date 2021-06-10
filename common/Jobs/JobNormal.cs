@@ -26,9 +26,8 @@ namespace common.Jobs
             if (nextDate > curDt)
                 return true;
 
-            nextDate = nextDate.Add(new TimeSpan(deltaTick));
             JobAct?.Invoke();
-
+            nextDate = curDt.Add(new TimeSpan(deltaTick));
             return true;
         }
 
@@ -44,8 +43,8 @@ namespace common.Jobs
             if (nextDate > curDt)
                 return true;
 
-            nextDate = nextDate.Add(new TimeSpan(deltaTick));
             await JobTask;
+            nextDate = curDt.Add(new TimeSpan(deltaTick));
             return true;
         }
     }

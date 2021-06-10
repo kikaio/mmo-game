@@ -16,11 +16,8 @@ using UnityEngine.UI;
 
 public class LobbyScene : MonoBehaviour
 {
-    public InputField MyIpTxt;
-    public InputField MyPortTxt;
 
     public InputField ConnToIpTxt;
-    public InputField ConnToPortTxt;
 
     public LobbyLog lobbyLog;
 
@@ -38,46 +35,35 @@ public class LobbyScene : MonoBehaviour
     bool isTest = false;
 #endif
 
-    public string MyIp {
-        get
-        {
-            return MyIpTxt?.text ?? string.Empty;
-        }
-    }
+    private IEnumerator StartConn()
+    {
+        if (string.IsNullOrWhiteSpace(ConnToIpTxt.text) && isTest == false)
+            yield return null;
+        string serverIP = ConnToIpTxt.text;
+        string testServerIP = "127.0.0.1";
+        int serverPort = 30000;
 
-    public int MyPort { get {
-            int ret = default(int);
-            if (int.TryParse(MyPortTxt.text, out ret) == false)
-                return -1;
-            return ret;
-        } }
+        if (isTest)
+            serverIP = testServerIP;
+        NetClient.Init(serverIP, serverPort);
+        UnityEngine.Debug.Log($"ClickConnectBtn");
+
+        lobbyNetworker = Networker.CreateNetworker("Lobby", () => {
+            UnityEngine.Debug.Log("LobbyNetworker shutdowned");
+        });
+
+        lobbyNetworker.SetConnToServer(NetClient.Inst.ServerIP, NetClient.Inst.ServerPort);
+        lobbyNetworker.ReadyToStart();
+        lobbyNetworker.Start();
+
+        lobbyLog.ConnToLobyyComplete();
+        StartCoroutine(SendHelloPacket());
+
+    }
 
     public void ClickConnectBtn()
     {
-        //todo : connect to other player's server
-        if(NetClient.Inst.PublicPort <= 0)
-            return;
-        if (string.IsNullOrWhiteSpace(NetClient.Inst.PublicIp))
-            return;
-        UnityEngine.Debug.Log($"ClickConnectBtn");
-        lobbyLog.TryConnToLobbyServer();
-        Task.Factory.StartNew(async () => 
-        {
-            UnityEngine.Debug.Log($"Conn Task is Started");
-            lobbyNetworker = Networker.CreateNetworker("Lobby", () =>
-            {
-                UnityEngine.Debug.Log("LobbyNetworker shutdowned");
-            });
-            lobbyNetworker.ReadyToStart();
-            lobbyNetworker.SetConnToServer(NetClient.Inst.PublicIp
-                , NetClient.Inst.PublicPort);
-            lobbyNetworker.StartConnect(()=> 
-            {
-                lobbyLog.ConnToLobyyComplete();
-                //start send hello packet until recv welcome packet
-                StartCoroutine(SendHelloPacket());
-            });
-        });
+        StartCoroutine(StartConn());
     }
 
     // send hello packet to lobbyserver while recv welcome packet.
@@ -90,6 +76,7 @@ public class LobbyScene : MonoBehaviour
             hello.PacketWrite();
             lobbyNetworker.mSession.OnSendTAP(hello.packet);
             yield return new WaitForSeconds(deltaSec);
+            UnityEngine.Debug.Log("hello send");
         }
     }
 
@@ -114,76 +101,6 @@ public class LobbyScene : MonoBehaviour
         }
     }
 
-
-    private IEnumerator GetPublicHostName()
-    {
-        UnityEngine.Debug.Log($"Start GetPublicHostName");
-        var ipEntries = Dns.GetHostEntry(Dns.GetHostName());
-
-        string privateIp = string.Empty;
-        foreach (var ele in ipEntries.AddressList)
-        {
-            if (ele.AddressFamily == AddressFamily.InterNetworkV6)
-                continue;
-            privateIp = ele.ToString();
-            break;
-        }
-        UnityEngine.Debug.Log($"private : {privateIp}");
-
-        string publicIp = privateIp;
-        string otherWeb = "http://ipinfo.io/ip";
-        using (var wc = new WebClient())
-        {
-            var ipStr = wc.DownloadString(otherWeb);
-            if (string.IsNullOrWhiteSpace(ipStr.Trim()) == false)
-                publicIp = ipStr;
-        }
-
-        //public , private 둘다?
-        int ServerPort = 30000;
-        //todo : get my public ip, port
-        NetClient.Init(publicIp, ServerPort, privateIp, ServerPort);
-
-        MyIpTxt.text = publicIp;
-        MyPortTxt.text = $"{ServerPort.ToString()}";
-
-        UnityEngine.Debug.Log($"public addr : {publicIp}/{ServerPort}");
-        yield return null;
-    }
-
-    public void ClickRunBtn()
-    {
-        //server program name
-
-        Task.Factory.StartNew(async () =>
-        {
-            lobbyLog.TryStartLobbyServer();
-            
-            
-#if TESTING == false
-        folderName = "Release";
-#endif
-            string serverExePath = $@".\ServerExe\{folderName}";
-            await FileUtils.RunServerProcess(serverExePath, serverProcessName, MyPort);
-
-            lobbyLog.ServerStartComplete();
-
-        }, TaskCreationOptions.DenyChildAttach);
-        
-        //port forwarding을 위한 shell script
-        string shellName = "";
-        //현재 port는 30000번으로 고정된 상태.
-        //Shell 실행 후 port forwarding, server process 실행.
-        //FileUtils.RunShell(shellName, true);
-
-        //todo : try connect to my server
-    }
-
-    public void Start()
-    {
-        StartCoroutine(GetPublicHostName());
-        //StartCoroutine(AsyncLoadSelectScene());
-    }
 
     private IEnumerator AsyncLoadSelectScene()
     {
